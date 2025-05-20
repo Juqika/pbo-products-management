@@ -83,7 +83,8 @@ public class VendorDAO implements VendorInterface {
     @Override
     public Vendor getById(int id) {
         Vendor v = null;
-        String sql = "SELECT * FROM vendors WHERE id_vendor = ? AND is_deleted = false";
+        String sql = "SELECT * FROM vendors WHERE i"
+                + "_vendor = ? AND is_deleted = false";
         try (PreparedStatement st = conn.prepareStatement(sql)) {
             st.setInt(1, id);
             ResultSet rs = st.executeQuery();
