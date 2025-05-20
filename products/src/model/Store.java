@@ -14,34 +14,54 @@ public class Store {
     private String address;
     
     public Store(){}
+    
     public Store(int idStore, String name, String address){
         this.address = address;
         this.idStore = idStore;
         this.name = name;
     }
 
+    /**
+     * @return the idStore
+     */
     public int getIdStore() {
         return idStore;
     }
 
+    /**
+     * @param idStore the idStore to set
+     */
     public void setIdStore(int idStore) {
         this.idStore = idStore;
     }
 
+    /**
+     * @return the name
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * @param name the name to set
+     */
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * @return the address
+     */
     public String getAddress() {
         return address;
     }
 
+    /**
+     * @param address the address to set
+     */
     public void setAddress(String address) {
         this.address = address;
     }
+    
     
 }

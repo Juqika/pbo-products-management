@@ -14,54 +14,101 @@ public class Product {
     private String name;
     private String type;
     private int qty;
-    
-    public Product(){}
-    public Product(int idProduct, int idVendor, String name, String type, int qty){
+    private boolean isDeleted;
+
+    public Product() {}
+
+    public Product(int idProduct, int idVendor, String name, String type, int qty, boolean isDeleted) {
         this.idProduct = idProduct;
         this.idVendor = idVendor;
         this.name = name;
-        this.qty = qty;
         this.type = type;
+        this.qty = qty;
+        this.isDeleted = isDeleted;
     }
 
+    /**
+     * @return the idProduct
+     */
     public int getIdProduct() {
         return idProduct;
     }
 
+    /**
+     * @param idProduct the idProduct to set
+     */
     public void setIdProduct(int idProduct) {
         this.idProduct = idProduct;
     }
 
+    /**
+     * @return the idVendor
+     */
     public int getIdVendor() {
         return idVendor;
     }
 
+    /**
+     * @param idVendor the idVendor to set
+     */
     public void setIdVendor(int idVendor) {
         this.idVendor = idVendor;
     }
 
+    /**
+     * @return the name
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * @param name the name to set
+     */
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * @return the type
+     */
     public String getType() {
         return type;
     }
 
+    /**
+     * @param type the type to set
+     */
     public void setType(String type) {
         this.type = type;
     }
 
+    /**
+     * @return the qty
+     */
     public int getQty() {
         return qty;
     }
 
+    /**
+     * @param qty the qty to set
+     */
     public void setQty(int qty) {
         this.qty = qty;
     }
-    
+
+    /**
+     * @return the isDeleted
+     */
+    public boolean isIsDeleted() {
+        return isDeleted;
+    }
+
+    /**
+     * @param isDeleted the isDeleted to set
+     */
+    public void setIsDeleted(boolean isDeleted) {
+        this.isDeleted = isDeleted;
+    }
+
 }

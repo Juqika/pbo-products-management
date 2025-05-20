@@ -20,28 +20,47 @@ public class StoreProduct {
         this.idStore = idStore;
     }
 
+    /**
+     * @return the idStoreProduct
+     */
     public int getIdStoreProduct() {
         return idStoreProduct;
     }
 
+    /**
+     * @param idStoreProduct the idStoreProduct to set
+     */
     public void setIdStoreProduct(int idStoreProduct) {
         this.idStoreProduct = idStoreProduct;
     }
 
+    /**
+     * @return the idStore
+     */
     public int getIdStore() {
         return idStore;
     }
 
+    /**
+     * @param idStore the idStore to set
+     */
     public void setIdStore(int idStore) {
         this.idStore = idStore;
     }
 
+    /**
+     * @return the idProduct
+     */
     public int getIdProduct() {
         return idProduct;
     }
 
+    /**
+     * @param idProduct the idProduct to set
+     */
     public void setIdProduct(int idProduct) {
         this.idProduct = idProduct;
     }
+    
     
 }

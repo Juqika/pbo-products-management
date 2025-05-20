@@ -4,10 +4,18 @@
  */
 package dao_interface;
 
+import java.util.List;
+import model.Product;
+
 /**
  *
  * @author indrovert
  */
 public interface ProductInterface {
-    
+    void insert(Product p);
+    void update(Product p);
+    void delete(int id);
+    List<Product> getAll();
+    List<Product> getSearchName(String name);
+    Product getById(int id); //
 }
