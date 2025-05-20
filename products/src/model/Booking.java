@@ -10,5 +10,6 @@ import java.time.LocalDateTime;
  * @author windows 10
  */
 public class Booking {
-    
+    private int id_booking, id_product, id_vendor, status;
+
 }

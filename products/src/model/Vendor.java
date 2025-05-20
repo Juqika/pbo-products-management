@@ -14,7 +14,7 @@ public class Vendor {
     private String address;
     
     public Vendor(){}
-    public Vendor(int idVentor, String name, String address){
+    public Vendor(int idVendor, String name, String address){
         this.idVendor = idVendor;
         this.name = name;
         this.address = address;

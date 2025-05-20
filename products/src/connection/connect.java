@@ -14,8 +14,7 @@ public class connect {
     public static Connection getcC(){
         MysqlDataSource sql = new MysqlDataSource();
         if(cC == null){
-//            sql.setURL("jdbc:mysql://localhost:3306/");
-            sql.setDatabaseName("");
+            sql.setDatabaseName("product_management");
             sql.setUser("root");
             sql.setPassword("");
             
