@@ -26,4 +26,13 @@ public class connect {
         }
         return cC;
     }
+    
+    public static void main(String[] args) {
+        Connection testConnection = getcC();
+        if (testConnection != null) {
+            System.out.println("Koneksi berhasil!");
+        } else {
+            System.out.println("Koneksi gagal!");
+        }
+    }
 }

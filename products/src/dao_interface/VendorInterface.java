@@ -12,5 +12,9 @@ import model.Vendor;
  * @author indrovert
  */
 public interface VendorInterface {
-    
+    void insert(Vendor v);
+    void update(Vendor v);
+    void delete(int id);
+    List<Vendor> getAll();
+    Vendor getById(int id); // << Tambahkan ini
 }
