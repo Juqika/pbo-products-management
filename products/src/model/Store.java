@@ -9,23 +9,24 @@ package model;
  * @author windows 10
  */
 public class Store {
-    private int idStore;
-    private String name;
-    private String address;
+    private int id_store;
+    private String name, address;
+    private boolean is_delete;
     
     public Store(){}
-    public Store(int idStore, String name, String address){
+    public Store(int id_store, String name, String address, boolean is_delete){
         this.address = address;
-        this.idStore = idStore;
+        this.id_store = id_store;
         this.name = name;
+        this.is_delete = is_delete;
     }
 
-    public int getIdStore() {
-        return idStore;
+    public int getId_store() {
+        return id_store;
     }
 
-    public void setIdStore(int idStore) {
-        this.idStore = idStore;
+    public void setId_store(int id_store) {
+        this.id_store = id_store;
     }
 
     public String getName() {
@@ -43,5 +44,14 @@ public class Store {
     public void setAddress(String address) {
         this.address = address;
     }
+
+    public boolean isIs_delete() {
+        return is_delete;
+    }
+
+    public void setIs_delete(boolean is_delete) {
+        this.is_delete = is_delete;
+    }
+    
     
 }

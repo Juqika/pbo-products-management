@@ -9,23 +9,24 @@ package model;
  * @author windows 10
  */
 public class Vendor {
-    private int idVendor;
-    private String name;
-    private String address;
+    private int id_vendor;
+    private String name, address;
+    private boolean is_delete;
     
     public Vendor(){}
-    public Vendor(int idVentor, String name, String address){
-        this.idVendor = idVendor;
+    public Vendor(int id_vendor, String name, String address, boolean is_delete){
+        this.id_vendor = id_vendor;
         this.name = name;
         this.address = address;
+        this.is_delete = is_delete;
     }
 
-    public int getIdVendor() {
-        return idVendor;
+    public int getId_vendor() {
+        return id_vendor;
     }
 
-    public void setIdVendor(int idVendor) {
-        this.idVendor = idVendor;
+    public void setId_vendor(int id_vendor) {
+        this.id_vendor = id_vendor;
     }
 
     public String getName() {
@@ -42,6 +43,14 @@ public class Vendor {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public boolean isIs_delete() {
+        return is_delete;
+    }
+
+    public void setIs_delete(boolean is_delete) {
+        this.is_delete = is_delete;
     }
     
     public String toString(){

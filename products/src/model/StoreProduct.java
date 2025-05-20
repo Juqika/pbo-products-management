@@ -9,39 +9,47 @@ package model;
  * @author windows 10
  */
 public class StoreProduct {
-    private int idStoreProduct;
-    private int idStore;
-    private int idProduct;
+    private int id_store_products, id_store, id_products;
+    private boolean is_delete;
     
     public StoreProduct(){}
-    public StoreProduct(int idStoreProduct, int idStore, int idProduct){
-        this.idProduct = idProduct;
-        this.idStoreProduct = idStoreProduct;
-        this.idStore = idStore;
+    public StoreProduct(int id_store_products, int id_store, int id_products, boolean is_delete){
+        this.id_products = id_products;
+        this.id_store_products = id_store_products;
+        this.id_store = id_store;
+        this.is_delete = is_delete;
     }
 
-    public int getIdStoreProduct() {
-        return idStoreProduct;
+    public int getId_store_products() {
+        return id_store_products;
     }
 
-    public void setIdStoreProduct(int idStoreProduct) {
-        this.idStoreProduct = idStoreProduct;
+    public void setId_store_products(int id_store_products) {
+        this.id_store_products = id_store_products;
     }
 
-    public int getIdStore() {
-        return idStore;
+    public int getId_store() {
+        return id_store;
     }
 
-    public void setIdStore(int idStore) {
-        this.idStore = idStore;
+    public void setId_store(int id_store) {
+        this.id_store = id_store;
     }
 
-    public int getIdProduct() {
-        return idProduct;
+    public int getId_products() {
+        return id_products;
     }
 
-    public void setIdProduct(int idProduct) {
-        this.idProduct = idProduct;
+    public void setId_products(int id_products) {
+        this.id_products = id_products;
+    }
+
+    public boolean isIs_delete() {
+        return is_delete;
+    }
+
+    public void setIs_delete(boolean is_delete) {
+        this.is_delete = is_delete;
     }
     
 }

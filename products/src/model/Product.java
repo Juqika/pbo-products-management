@@ -9,35 +9,42 @@ package model;
  * @author windows 10
  */
 public class Product {
-    private int idProduct;
-    private int idVendor;
-    private String name;
-    private String type;
-    private int qty;
+    private int id_product, id_vendor, qty;
+    private String name, type;
+    private boolean id_deleted;
     
     public Product(){}
-    public Product(int idProduct, int idVendor, String name, String type, int qty){
-        this.idProduct = idProduct;
-        this.idVendor = idVendor;
+    public Product(int id_product, int id_vendor, String name, String type, int qty, boolean id_delete){
+        this.id_product = id_product;
+        this.id_vendor = id_vendor;
         this.name = name;
         this.qty = qty;
         this.type = type;
+        this.id_deleted = id_delete;
     }
 
-    public int getIdProduct() {
-        return idProduct;
+    public int getId_product() {
+        return id_product;
     }
 
-    public void setIdProduct(int idProduct) {
-        this.idProduct = idProduct;
+    public void setId_product(int id_product) {
+        this.id_product = id_product;
     }
 
-    public int getIdVendor() {
-        return idVendor;
+    public int getId_vendor() {
+        return id_vendor;
     }
 
-    public void setIdVendor(int idVendor) {
-        this.idVendor = idVendor;
+    public void setId_vendor(int id_vendor) {
+        this.id_vendor = id_vendor;
+    }
+
+    public int getQty() {
+        return qty;
+    }
+
+    public void setQty(int qty) {
+        this.qty = qty;
     }
 
     public String getName() {
@@ -56,12 +63,12 @@ public class Product {
         this.type = type;
     }
 
-    public int getQty() {
-        return qty;
+    public boolean isId_deleted() {
+        return id_deleted;
     }
 
-    public void setQty(int qty) {
-        this.qty = qty;
+    public void setId_deleted(boolean id_deleted) {
+        this.id_deleted = id_deleted;
     }
     
 }
