@@ -9,30 +9,25 @@ package model;
  * @author windows 10
  */
 public class Store {
-    private int idStore;
-    private String name;
-    private String address;
+    private int id_store;
+    private String name, address;
+    private boolean is_deleted;
     
     public Store(){}
     
-    public Store(int idStore, String name, String address){
+    public Store(int id_store, String name, String address, boolean is_deleted){
         this.address = address;
-        this.idStore = idStore;
+        this.id_store = id_store;
         this.name = name;
+        this.is_deleted = is_deleted;
     }
 
-    /**
-     * @return the idStore
-     */
-    public int getIdStore() {
-        return idStore;
+    public int getId_store() {
+        return id_store;
     }
 
-    /**
-     * @param idStore the idStore to set
-     */
-    public void setIdStore(int idStore) {
-        this.idStore = idStore;
+    public void setId_store(int id_store) {
+        this.id_store = id_store;
     }
 
     /**
@@ -62,6 +57,14 @@ public class Store {
     public void setAddress(String address) {
         this.address = address;
     }
-    
+
+    public boolean isIs_deleted() {
+        return is_deleted;
+    }
+
+    public void setIs_deleted(boolean is_deleted) {
+        this.is_deleted = is_deleted;
+    }
+
     
 }
