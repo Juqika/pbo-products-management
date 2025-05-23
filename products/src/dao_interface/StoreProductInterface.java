@@ -4,10 +4,15 @@
  */
 package dao_interface;
 
+import java.util.List;
+import model.StoreProduct;
 /**
  *
  * @author indrovert
  */
 public interface StoreProductInterface {
-    
+    List<StoreProduct> getProduct(int idStore);
+    boolean addProduct(int idStore, int idProduct);
+    boolean deleteProduct(int idStore, int idProduct);
+    boolean getById(int idStore, int idProduct);
 }
