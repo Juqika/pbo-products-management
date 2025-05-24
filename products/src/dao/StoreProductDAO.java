@@ -61,7 +61,7 @@ public class StoreProductDAO implements StoreProductInterface {
     
 @Override
 public boolean deleteProduct(int idStore, int idProduct) {
-    String sql = "DELETE FROM store_products WHERE id_store = ? AND id_product = ?";
+    String sql = "DELETE FROM store_product WHERE id_store = ? AND id_product = ?";
     try (PreparedStatement st = conn.prepareStatement(sql)) {
         st.setInt(1, idStore);
         st.setInt(2, idProduct);
