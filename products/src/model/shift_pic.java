@@ -8,9 +8,9 @@ package model;
  *
  * @author windows 10
  */
-public class StoreProduct {
-    private int idStoreProduct;
-    private int idStore;
+public class shift_pic {
+    private int idShift;
+    private String name, note;
     private int idProduct;
     
     public StoreProduct(){}
