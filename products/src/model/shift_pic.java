@@ -10,57 +10,53 @@ package model;
  */
 public class shift_pic {
     private int idShift;
-    private String name, note;
-    private int idProduct;
+    private String name, note, start_check_time, end_check_time;
+    private boolean is_deleted;
     
-    public StoreProduct(){}
-    public StoreProduct(int idStoreProduct, int idStore, int idProduct){
-        this.idProduct = idProduct;
-        this.idStoreProduct = idStoreProduct;
-        this.idStore = idStore;
+    public shift_pic(){}
+    public shift_pic(int idShift, String name, String start_check_time, String end_check_time, String note, boolean is_deleted){
+        this.idShift = idShift;
+        this.name = name;
+        this.start_check_time = start_check_time;
+        this.end_check_time = end_check_time;
+        this.note = note;
+        this.is_deleted = is_deleted;
+    }
+    public boolean isIs_deleted() {
+        return is_deleted;
+    }
+    public void setIs_deleted(boolean is_deleted) {
+        this.is_deleted = is_deleted;
+    }
+    public int getIdShift() {
+        return idShift;
+    }
+    public void setIdShift(int idShift) {
+        this.idShift = idShift;
+    }
+    public String getName() {
+        return name;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
+    public String getNote() {
+        return note;
+    }
+    public void setNote(String note) {
+        this.note = note;
+    }
+    public String getStart_check_time() {
+        return start_check_time;
+    }
+    public void setStart_check_time(String start_check_time) {
+        this.start_check_time = start_check_time;
+    }
+    public String getEnd_check_time() {
+        return end_check_time;
+    }
+    public void setEnd_check_time(String end_check_time) {
+        this.end_check_time = end_check_time;
     }
 
-    /**
-     * @return the idStoreProduct
-     */
-    public int getIdStoreProduct() {
-        return idStoreProduct;
-    }
-
-    /**
-     * @param idStoreProduct the idStoreProduct to set
-     */
-    public void setIdStoreProduct(int idStoreProduct) {
-        this.idStoreProduct = idStoreProduct;
-    }
-
-    /**
-     * @return the idStore
-     */
-    public int getIdStore() {
-        return idStore;
-    }
-
-    /**
-     * @param idStore the idStore to set
-     */
-    public void setIdStore(int idStore) {
-        this.idStore = idStore;
-    }
-
-    /**
-     * @return the idProduct
-     */
-    public int getIdProduct() {
-        return idProduct;
-    }
-
-    /**
-     * @param idProduct the idProduct to set
-     */
-    public void setIdProduct(int idProduct) {
-        this.idProduct = idProduct;
-    }
-    
-    
 }

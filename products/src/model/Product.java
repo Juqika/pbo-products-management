@@ -9,22 +9,26 @@ package model;
  * @author windows 10
  */
 public class Product {
-    private int idProduct;
-    private int idVendor;
-    private String name;
-    private String type;
-    private int qty;
-    private boolean isDeleted;
+    private int idProduct, qty;
+    private String name, type;
+    private boolean is_deleted;
 
     public Product() {}
 
-    public Product(int idProduct, int idVendor, String name, String type, int qty, boolean isDeleted) {
+    public Product(int idProduct, String name, String type, int qty, boolean is_deleted) {
         this.idProduct = idProduct;
-        this.idVendor = idVendor;
         this.name = name;
         this.type = type;
         this.qty = qty;
-        this.isDeleted = isDeleted;
+        this.is_deleted = is_deleted;
+    }
+
+    public boolean isIs_deleted() {
+        return is_deleted;
+    }
+
+    public void setIs_deleted(boolean is_deleted) {
+        this.is_deleted = is_deleted;
     }
 
     /**
@@ -39,20 +43,6 @@ public class Product {
      */
     public void setIdProduct(int idProduct) {
         this.idProduct = idProduct;
-    }
-
-    /**
-     * @return the idVendor
-     */
-    public int getIdVendor() {
-        return idVendor;
-    }
-
-    /**
-     * @param idVendor the idVendor to set
-     */
-    public void setIdVendor(int idVendor) {
-        this.idVendor = idVendor;
     }
 
     /**
@@ -95,20 +85,6 @@ public class Product {
      */
     public void setQty(int qty) {
         this.qty = qty;
-    }
-
-    /**
-     * @return the isDeleted
-     */
-    public boolean isIsDeleted() {
-        return isDeleted;
-    }
-
-    /**
-     * @param isDeleted the isDeleted to set
-     */
-    public void setIsDeleted(boolean isDeleted) {
-        this.isDeleted = isDeleted;
     }
 
 }
