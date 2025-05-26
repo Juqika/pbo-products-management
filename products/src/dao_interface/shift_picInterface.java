@@ -5,13 +5,13 @@
 package dao_interface;
 
 import java.util.List;
-import model.StoreProduct;
+import model.shift_pic;
 /**
  *
  * @author indrovert
  */
-public interface StoreProductInterface {
-    List<StoreProduct> getProduct(int idStore);
+public interface shift_picInterface {
+    List<shift_pic> getProduct(int idStore);
     boolean addProduct(int idStore, int idProduct);
     boolean deleteProduct(int idStore, int idProduct);
     boolean getById(int idStore, int idProduct);
