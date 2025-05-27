@@ -17,5 +17,5 @@ public interface shiftPicInterface {
     void update(shift_pic s);
     void delete(int idShift);
     List<shift_pic> getAll();
-    shift_pic getById(int id); 
+    shift_pic getById(int idShift); 
 }

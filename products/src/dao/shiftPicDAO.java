@@ -6,11 +6,11 @@ package dao;
 
 import connection.connect;
 import model.shift_pic;
+import dao_interface.shiftPicInterface;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import dao_interface.shiftPicInterface;
 /**
  *
  * @author windows 10
@@ -22,11 +22,11 @@ public class shiftPicDAO implements shiftPicInterface {
     }
     
     @Override
-    public void insert(Store s){
+    public void insert(shift_pic s){
         String sql = "INSERT INTO STORES (name, address ,is_deleted) VALUES (?, ?, false)";
         try(PreparedStatement st = conn.prepareStatement(sql)){
-            st.setString(1, s.getName());
-            st.setString(2, s.getAddress());
+            st.setString(1, s.getIdShift());
+            st.setString(2, s.getName());
             st.executeUpdate();
             
         }catch(SQLException e){
