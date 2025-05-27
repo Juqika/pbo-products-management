@@ -5,17 +5,17 @@
 package dao_interface;
 
 import java.util.List;
-import model.Store;
+import model.shift_pic;
 
 /**
  *
  * @author indrovert
  */
 
-public interface StoreInterface {
-    void insert(Store s);
-    void update(Store s);
-    void delete(int id);
-    List<Store> getAll();
-    Store getById(int id); 
+public interface shiftPicInterface {
+    void insert(shift_pic s);
+    void update(shift_pic s);
+    void delete(int idShift);
+    List<shift_pic> getAll();
+    shift_pic getById(int id); 
 }

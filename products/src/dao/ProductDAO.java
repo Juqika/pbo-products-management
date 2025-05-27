@@ -25,7 +25,7 @@ public class ProductDAO implements ProductInterface {
     public void insert(Product p) {
         String sql = "INSERT INTO product (id_vendor, name, type, qty, is_deleted) VALUES (?, ?, ?, ?, false)";
         try(PreparedStatement st = conn.prepareStatement(sql)) {
-            st.setInt(1, p.getIdVendor());
+            st.setInt(1, p.getIdProduct());
             st.setString(2, p.getName());
             st.setString(3, p.getType());
             st.setInt(4, p.getQty());

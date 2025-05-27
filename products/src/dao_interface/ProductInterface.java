@@ -14,7 +14,7 @@ import model.Product;
 public interface ProductInterface {
     void insert(Product p);
     void update(Product p);
-    void delete(int id);
+    void delete(int idProduct);
     List<Product> getAll();
     List<Product> getSearchName(String name);
     Product getById(int id);
