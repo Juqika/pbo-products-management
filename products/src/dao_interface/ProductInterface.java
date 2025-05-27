@@ -17,5 +17,5 @@ public interface ProductInterface {
     void delete(int id);
     List<Product> getAll();
     List<Product> getSearchName(String name);
-    Product getById(int id); //
+    Product getById(int id);
 }
