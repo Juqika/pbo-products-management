@@ -23,7 +23,7 @@ public class shiftPicDAO implements shiftPicInterface {
     
     @Override
     public void insert(shift_pic s){
-        String sql = "INSERT INTO STORES (name, address ,is_deleted) VALUES (?, ?, false)";
+        String sql = "INSERT INTO STORES (name, start ,end ,note ,is_deleted) VALUES (?, ?, ?, ?, false)";
         try(PreparedStatement st = conn.prepareStatement(sql)){
             st.setString(1, s.getName());
             st.setTimestamp(2, Timestamp.valueOf(s.getStart_check_time()));
@@ -32,29 +32,31 @@ public class shiftPicDAO implements shiftPicInterface {
             st.executeUpdate();
             
         }catch(SQLException e){
-            System.out.println("error" + e.getMessage());
+            System.out.println("error: " + e.getMessage());
         }
     }
     @Override
     public void update(shift_pic s){
-        String sql = "UPDATE Stores set name = ?, address = ?, WHERE id_store = ?";
+        String sql = "UPDATE Stores SET name = ?, start = ?, end = ?, note = ?, WHERE id_store = ?";
         try(PreparedStatement st = conn.prepareStatement(sql)){
             st.setString(1, s.getName());
-            st.setString(2, s.getNote());
-            st.setInt(3, s.getIdShift());
+            st.setTimestamp(2, Timestamp.valueOf(s.getStart_check_time()));
+            st.setTimestamp(3, Timestamp.valueOf(s.getEnd_check_time()));
+            st.setString(4, s.getNote());
+            st.setInt(5, s.getIdShift());
             st.executeUpdate();
         }catch(SQLException e){
-            System.out.println("error"+ e.getMessage());
+            System.out.println("error: "+ e.getMessage());
         }
     }
     @Override
     public void delete(int idShift){
-        String sql = "UPDATE Stores set is_deleted = true WHERE id_store = ?";
+        String sql = "UPDATE Stores SET is_deleted = true WHERE id_store = ?";
         try(PreparedStatement st = conn.prepareStatement(sql)){
             st.setInt(1, idShift);
             st.executeUpdate();
         }catch(SQLException e){
-            System.out.println("error"+e.getMessage());
+            System.out.println("error: "+e.getMessage());
         }
     }
     @Override
@@ -65,14 +67,22 @@ public class shiftPicDAO implements shiftPicInterface {
             ResultSet rs = st.executeQuery();
             while(rs.next()){
                 shift_pic s = new shift_pic();
-                s.setIdShift(rs.getInt("id_store"));
+                s.setIdShift(rs.getInt("id_shift"));
                 s.setName(rs.getString("name"));
-                s.setNote(rs.getString("address"));
+                Timestamp start = rs.getTimestamp("start");
+                if (start != null) {
+                    s.setStart_check_time(start.toLocalDateTime());
+                }
+                Timestamp end = rs.getTimestamp("end");
+                if (end != null) {
+                    s.setEnd_check_time(end.toLocalDateTime());
+                }
+                s.setNote(rs.getString("note"));
                 s.setIs_deleted(false);
                 list.add(s);
             }
         }catch(SQLException e){
-            System.out.println("error"+e.getMessage());
+            System.out.println("error: "+e.getMessage());
         }
         return list;
     }
@@ -85,13 +95,21 @@ public class shiftPicDAO implements shiftPicInterface {
             ResultSet rs = st.executeQuery();
             if(rs.next()){
                 s = new shift_pic();
-                s.setIdShift(rs.getInt("id_store"));
+                s.setIdShift(rs.getInt("id_shift"));
                 s.setName(rs.getString("name"));
-                s.setNote(rs.getString("address"));
+                Timestamp start = rs.getTimestamp("start");
+                if (start!= null) {
+                    s.setStart_check_time(start.toLocalDateTime());
+                }
+                Timestamp end = rs.getTimestamp("end");
+                if (end!= null) {
+                    s.setEnd_check_time(end.toLocalDateTime());
+                }
+                s.setNote(rs.getString("note"));
                 s.setIs_deleted(false);
             }
         }catch(SQLException e){
-            System.out.println("error" + e.getMessage());
+            System.out.println("error: " + e.getMessage());
         }
         return s;
     }
