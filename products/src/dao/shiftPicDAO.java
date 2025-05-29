@@ -25,8 +25,10 @@ public class shiftPicDAO implements shiftPicInterface {
     public void insert(shift_pic s){
         String sql = "INSERT INTO STORES (name, address ,is_deleted) VALUES (?, ?, false)";
         try(PreparedStatement st = conn.prepareStatement(sql)){
-            st.setString(1, s.getIdShift());
-            st.setString(2, s.getName());
+            st.setString(1, s.getName());
+            st.setTimestamp(2, Timestamp.valueOf(s.getStart_check_time()));
+            st.setTimestamp(3, Timestamp.valueOf(s.getEnd_check_time()));
+            st.setString(4, s.getNote());
             st.executeUpdate();
             
         }catch(SQLException e){
@@ -34,38 +36,38 @@ public class shiftPicDAO implements shiftPicInterface {
         }
     }
     @Override
-    public void update(Store s){
+    public void update(shift_pic s){
         String sql = "UPDATE Stores set name = ?, address = ?, WHERE id_store = ?";
         try(PreparedStatement st = conn.prepareStatement(sql)){
             st.setString(1, s.getName());
-            st.setString(2, s.getAddress());
-            st.setInt(3, s.getId_store());
+            st.setString(2, s.getNote());
+            st.setInt(3, s.getIdShift());
             st.executeUpdate();
         }catch(SQLException e){
             System.out.println("error"+ e.getMessage());
         }
     }
     @Override
-    public void delete(int id){
+    public void delete(int idShift){
         String sql = "UPDATE Stores set is_deleted = true WHERE id_store = ?";
         try(PreparedStatement st = conn.prepareStatement(sql)){
-            st.setInt(1, id);
+            st.setInt(1, idShift);
             st.executeUpdate();
         }catch(SQLException e){
             System.out.println("error"+e.getMessage());
         }
     }
     @Override
-    public List<Store> getAll(){
-        List<Store> list = new ArrayList<>();
+    public List<shift_pic> getAll(){
+        List<shift_pic> list = new ArrayList<>();
         String sql = "SELECT * FROM stores WHERE is_deleted = false";
         try(PreparedStatement st = conn.prepareStatement(sql)){
             ResultSet rs = st.executeQuery();
             while(rs.next()){
-                Store s = new Store();
-                s.setId_store(rs.getInt("id_store"));
+                shift_pic s = new shift_pic();
+                s.setIdShift(rs.getInt("id_store"));
                 s.setName(rs.getString("name"));
-                s.setAddress(rs.getString("address"));
+                s.setNote(rs.getString("address"));
                 s.setIs_deleted(false);
                 list.add(s);
             }
@@ -75,17 +77,17 @@ public class shiftPicDAO implements shiftPicInterface {
         return list;
     }
     @Override
-    public Store getById(int id){
-        Store s = null;
+    public shift_pic getById(int idShift){
+        shift_pic s = null;
         String sql = "SELECT * FROM stores WHERE id_store = ? AND is_deleted = false";
         try(PreparedStatement st = conn.prepareStatement(sql)){
-            st.setInt(1, id);
+            st.setInt(1, idShift);
             ResultSet rs = st.executeQuery();
             if(rs.next()){
-                s = new Store();
-                s.setId_store(rs.getInt("id_store"));
+                s = new shift_pic();
+                s.setIdShift(rs.getInt("id_store"));
                 s.setName(rs.getString("name"));
-                s.setAddress(rs.getString("address"));
+                s.setNote(rs.getString("address"));
                 s.setIs_deleted(false);
             }
         }catch(SQLException e){

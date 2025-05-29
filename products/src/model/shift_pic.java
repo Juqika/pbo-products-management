@@ -4,17 +4,20 @@
  */
 package model;
 
+import java.time.LocalDateTime;
+
 /**
  *
  * @author windows 10
  */
 public class shift_pic {
     private int idShift;
-    private String name, note, start_check_time, end_check_time;
+    private String name, note;
+    private LocalDateTime start_check_time, end_check_time;
     private boolean is_deleted;
     
     public shift_pic(){}
-    public shift_pic(int idShift, String name, String start_check_time, String end_check_time, String note, boolean is_deleted){
+    public shift_pic(int idShift, String name, LocalDateTime start_check_time, LocalDateTime end_check_time, String note, boolean is_deleted){
         this.idShift = idShift;
         this.name = name;
         this.start_check_time = start_check_time;
@@ -46,16 +49,16 @@ public class shift_pic {
     public void setNote(String note) {
         this.note = note;
     }
-    public String getStart_check_time() {
+    public LocalDateTime getStart_check_time() {
         return start_check_time;
     }
-    public void setStart_check_time(String start_check_time) {
+    public void setStart_check_time(LocalDateTime start_check_time) {
         this.start_check_time = start_check_time;
     }
-    public String getEnd_check_time() {
+    public LocalDateTime getEnd_check_time() {
         return end_check_time;
     }
-    public void setEnd_check_time(String end_check_time) {
+    public void setEnd_check_time(LocalDateTime end_check_time) {
         this.end_check_time = end_check_time;
     }
 
