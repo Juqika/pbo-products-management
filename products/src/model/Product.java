@@ -9,7 +9,7 @@ package model;
  * @author windows 10
  */
 public class Product {
-    private int idProduct, qty;
+private int idProduct, qty;
     private String name, type;
     private boolean is_deleted;
 
