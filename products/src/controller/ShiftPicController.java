@@ -31,7 +31,7 @@ public class ShiftPicController {
         s.setIdShift(idShift);
         s.setName(name);
         s.setStart_check_time(start);
-        s.setStart_check_time(end);
+        s.setEnd_check_time(end);
         s.setNote(note);
         shiftDAO.update(s);
     }

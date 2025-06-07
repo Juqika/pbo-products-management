@@ -26,21 +26,82 @@ public class main extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        btnEmployee = new javax.swing.JButton();
+        btnProduct = new javax.swing.JButton();
+        btnShift = new javax.swing.JButton();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        btnEmployee.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        btnEmployee.setText("Employee");
+        btnEmployee.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEmployeeActionPerformed(evt);
+            }
+        });
+
+        btnProduct.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        btnProduct.setText("Product");
+        btnProduct.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnProductActionPerformed(evt);
+            }
+        });
+
+        btnShift.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        btnShift.setText("Shift");
+        btnShift.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnShiftActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(144, 144, 144)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(btnShift, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnEmployee, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnProduct, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(163, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(btnEmployee, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(btnProduct, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
+                .addComponent(btnShift, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnEmployeeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEmployeeActionPerformed
+        EmployeeView emView = new EmployeeView();
+        emView.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnEmployeeActionPerformed
+
+    private void btnProductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProductActionPerformed
+        // TODO add your handling code here:
+        ProductView prView = new ProductView();
+        prView.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnProductActionPerformed
+
+    private void btnShiftActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnShiftActionPerformed
+        // TODO add your handling code here:
+        ShiftPicView shView = new ShiftPicView();
+        shView.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnShiftActionPerformed
 
     /**
      * @param args the command line arguments
@@ -78,5 +139,8 @@ public class main extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnEmployee;
+    private javax.swing.JButton btnProduct;
+    private javax.swing.JButton btnShift;
     // End of variables declaration//GEN-END:variables
 }

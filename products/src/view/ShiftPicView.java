@@ -4,19 +4,27 @@
  */
 package view;
 
+import controller.ShiftPicController;
+import java.time.LocalDateTime;
+import java.util.List;
+import javax.swing.JOptionPane;
+import model.shift_pic;
 /**
  *
  * @author windows 10
  */
-public class ShiftPicView extends javax.swing.JPanel {
+public class ShiftPicView extends javax.swing.JFrame {
 
-    /**
-     * Creates new form VendorView
-     */
+    private ShiftPicController sp;
+    
     public ShiftPicView() {
         initComponents();
+        
+        // Inisialisasi controller dan isi tabel
+        sp = new ShiftPicController(this);
+        loadData();
     }
-
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -123,14 +131,30 @@ public class ShiftPicView extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_tfNameActionPerformed
 
-    private void btnStartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStartActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnStartActionPerformed
+    private void btnStartActionPerformed(java.awt.event.ActionEvent evt) {
+        String name = tfName.getText();
+        String note = tfNote.getText();
+        LocalDateTime now = LocalDateTime.now();
+        
+        controller.cInsert(name, now, null, note);
+        loadData();
+    }
 
-    private void btnStopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStopActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnStopActionPerformed
-
+    private void btnStopActionPerformed(java.awt.event.ActionEvent evt) {
+        // Get selected row
+        int row = tTable.getSelectedRow();
+        if (row >= 0) {
+            int id = (int) tTable.getValueAt(row, 0);
+            String name = (String) tTable.getValueAt(row, 1);
+            LocalDateTime start = (LocalDateTime) tTable.getValueAt(row, 2);
+            String note = tfNote.getText();
+            
+            controller.cUpdate(id, name, start, LocalDateTime.now(), note);
+            loadData();
+        } else {
+            JOptionPane.showMessageDialog(this, "Please select a shift to stop");
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnStart;

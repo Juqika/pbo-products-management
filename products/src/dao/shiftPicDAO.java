@@ -23,25 +23,24 @@ public class shiftPicDAO implements shiftPicInterface {
     
     @Override
     public void insert(shift_pic s){
-        String sql = "INSERT INTO STORES (name, start ,end ,note ,is_deleted) VALUES (?, ?, ?, ?, false)";
+        String sql = "INSERT INTO ShiftPic (name, start, end, note, is_deleted) VALUES (?, ?, ?, ?, false)";
         try(PreparedStatement st = conn.prepareStatement(sql)){
             st.setString(1, s.getName());
             st.setTimestamp(2, Timestamp.valueOf(s.getStart_check_time()));
-            st.setTimestamp(3, Timestamp.valueOf(s.getEnd_check_time()));
+            st.setTimestamp(3, s.getEnd_check_time() != null ? Timestamp.valueOf(s.getEnd_check_time()) : null);
             st.setString(4, s.getNote());
             st.executeUpdate();
-            
         }catch(SQLException e){
             System.out.println("error: " + e.getMessage());
         }
     }
     @Override
     public void update(shift_pic s){
-        String sql = "UPDATE Stores SET name = ?, start = ?, end = ?, note = ?, WHERE id_store = ?";
+        String sql = "UPDATE ShiftPic SET name = ?, start = ?, end = ?, note = ? WHERE id_shift = ?";
         try(PreparedStatement st = conn.prepareStatement(sql)){
             st.setString(1, s.getName());
             st.setTimestamp(2, Timestamp.valueOf(s.getStart_check_time()));
-            st.setTimestamp(3, Timestamp.valueOf(s.getEnd_check_time()));
+            st.setTimestamp(3, s.getEnd_check_time() != null ? Timestamp.valueOf(s.getEnd_check_time()) : null);
             st.setString(4, s.getNote());
             st.setInt(5, s.getIdShift());
             st.executeUpdate();
@@ -51,7 +50,7 @@ public class shiftPicDAO implements shiftPicInterface {
     }
     @Override
     public void delete(int idShift){
-        String sql = "UPDATE Stores SET is_deleted = true WHERE id_store = ?";
+        String sql = "UPDATE ShiftPic SET is_deleted = true WHERE id_shift = ?";
         try(PreparedStatement st = conn.prepareStatement(sql)){
             st.setInt(1, idShift);
             st.executeUpdate();
@@ -62,7 +61,7 @@ public class shiftPicDAO implements shiftPicInterface {
     @Override
     public List<shift_pic> getAll(){
         List<shift_pic> list = new ArrayList<>();
-        String sql = "SELECT * FROM stores WHERE is_deleted = false";
+        String sql = "SELECT * FROM ShiftPic WHERE is_deleted = false";
         try(PreparedStatement st = conn.prepareStatement(sql)){
             ResultSet rs = st.executeQuery();
             while(rs.next()){
@@ -89,7 +88,7 @@ public class shiftPicDAO implements shiftPicInterface {
     @Override
     public shift_pic getById(int idShift){
         shift_pic s = null;
-        String sql = "SELECT * FROM stores WHERE id_store = ? AND is_deleted = false";
+        String sql = "SELECT * FROM ShiftPic WHERE id_shift = ? AND is_deleted = false";
         try(PreparedStatement st = conn.prepareStatement(sql)){
             st.setInt(1, idShift);
             ResultSet rs = st.executeQuery();
