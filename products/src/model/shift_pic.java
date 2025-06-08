@@ -25,12 +25,7 @@ public class shift_pic {
         this.note = note;
         this.is_deleted = is_deleted;
     }
-    public boolean isIs_deleted() {
-        return is_deleted;
-    }
-    public void setIs_deleted(boolean is_deleted) {
-        this.is_deleted = is_deleted;
-    }
+
     public int getIdShift() {
         return idShift;
     }
@@ -43,12 +38,7 @@ public class shift_pic {
     public void setName(String name) {
         this.name = name;
     }
-    public String getNote() {
-        return note;
-    }
-    public void setNote(String note) {
-        this.note = note;
-    }
+
     public LocalDateTime getStart_check_time() {
         return start_check_time;
     }
@@ -62,4 +52,19 @@ public class shift_pic {
         this.end_check_time = end_check_time;
     }
 
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
+    }
+
+    public boolean isIs_deleted() {
+        return is_deleted;
+    }
+
+    public void setIs_deleted(boolean is_deleted) {
+        this.is_deleted = is_deleted;
+    }
 }

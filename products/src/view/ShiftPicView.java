@@ -22,7 +22,8 @@ public class ShiftPicView extends javax.swing.JFrame {
         
         // Inisialisasi controller dan isi tabel
         sp = new ShiftPicController(this);
-        loadData();
+        sp.isiTable();
+        sp.setAutoID();
     }
     
     /**
@@ -40,6 +41,7 @@ public class ShiftPicView extends javax.swing.JFrame {
         btnStart = new javax.swing.JButton();
         btnStop = new javax.swing.JButton();
         tfNote = new javax.swing.JTextField();
+        tfID = new javax.swing.JTextField();
 
         tTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -90,17 +92,25 @@ public class ShiftPicView extends javax.swing.JFrame {
             }
         });
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
+        tfID.setText("ID");
+        tfID.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tfIDActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(10, 10, 10)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(tfName)
-                    .addComponent(btnStart, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 143, Short.MAX_VALUE)
-                    .addComponent(btnStop, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 143, Short.MAX_VALUE)
-                    .addComponent(tfNote, javax.swing.GroupLayout.Alignment.TRAILING))
+                    .addComponent(btnStart, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 153, Short.MAX_VALUE)
+                    .addComponent(btnStop, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 153, Short.MAX_VALUE)
+                    .addComponent(tfNote, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(tfID, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -111,10 +121,12 @@ public class ShiftPicView extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(tfName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(tfID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(tfNote, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
+                        .addComponent(tfName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(7, 7, 7)
+                        .addComponent(tfNote, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btnStart, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnStop, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -131,13 +143,17 @@ public class ShiftPicView extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_tfNameActionPerformed
 
+    private void tfIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfIDActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tfIDActionPerformed
+
     private void btnStartActionPerformed(java.awt.event.ActionEvent evt) {
         String name = tfName.getText();
         String note = tfNote.getText();
         LocalDateTime now = LocalDateTime.now();
         
-        controller.cInsert(name, now, null, note);
-        loadData();
+        sp.insert(name, now, null, note);
+        sp.clear(); // Tambahkan ini di akhir btnStartActionPerformed()
     }
 
     private void btnStopActionPerformed(java.awt.event.ActionEvent evt) {
@@ -149,11 +165,43 @@ public class ShiftPicView extends javax.swing.JFrame {
             LocalDateTime start = (LocalDateTime) tTable.getValueAt(row, 2);
             String note = tfNote.getText();
             
-            controller.cUpdate(id, name, start, LocalDateTime.now(), note);
-            loadData();
+            sp.update(id, name, start, LocalDateTime.now(), note);
+            // Tidak perlu memanggil clear() karena sudah dipanggil di dalam update()
         } else {
             JOptionPane.showMessageDialog(this, "Please select a shift to stop");
         }
+    }
+    
+        public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(EmployeeView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(EmployeeView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(EmployeeView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(EmployeeView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new ShiftPicView().setVisible(true);
+            }
+        });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -161,7 +209,26 @@ public class ShiftPicView extends javax.swing.JFrame {
     private javax.swing.JButton btnStop;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tTable;
+    private javax.swing.JTextField tfID;
     private javax.swing.JTextField tfName;
     private javax.swing.JTextField tfNote;
     // End of variables declaration//GEN-END:variables
+
+    // Metode getter yang diperlukan di ShiftPicView
+
+    public javax.swing.JTextField gettfID() {
+        return tfID;
+    }
+
+    public javax.swing.JTextField gettfName() {
+        return tfName;
+    }
+
+    public javax.swing.JTextField gettfNote() {
+        return tfNote;
+    }
+
+    public javax.swing.JTable gettTable() {
+        return tTable;
+    }
 }

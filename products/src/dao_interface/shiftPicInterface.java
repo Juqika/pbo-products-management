@@ -13,9 +13,9 @@ import model.shift_pic;
  */
 
 public interface shiftPicInterface {
-    void insert(shift_pic s);
-    void update(shift_pic s);
-    void delete(int idShift);
-    List<shift_pic> getAll();
-    shift_pic getById(int idShift); 
+    public void insert(shift_pic s);
+    public void update(shift_pic s);
+    public void delete(int id);
+    public List<shift_pic> getAll();
+    public shift_pic getById(int id);
 }

@@ -22,15 +22,22 @@ public class shiftPicDAO implements shiftPicInterface {
     }
     
     @Override
-    public void insert(shift_pic s){
+    public void insert(shift_pic s) {
         String sql = "INSERT INTO ShiftPic (name, start, end, note, is_deleted) VALUES (?, ?, ?, ?, false)";
-        try(PreparedStatement st = conn.prepareStatement(sql)){
+        try (PreparedStatement st = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             st.setString(1, s.getName());
             st.setTimestamp(2, Timestamp.valueOf(s.getStart_check_time()));
             st.setTimestamp(3, s.getEnd_check_time() != null ? Timestamp.valueOf(s.getEnd_check_time()) : null);
             st.setString(4, s.getNote());
             st.executeUpdate();
-        }catch(SQLException e){
+            
+            // Get the auto-generated ID
+            try (ResultSet rs = st.getGeneratedKeys()) {
+                if (rs.next()) {
+                    s.setIdShift(rs.getInt(1));
+                }
+            }
+        } catch (SQLException e) {
             System.out.println("error: " + e.getMessage());
         }
     }

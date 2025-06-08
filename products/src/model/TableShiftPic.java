@@ -1,9 +1,11 @@
 package model;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import javax.swing.table.AbstractTableModel;
 
 public class TableShiftPic extends AbstractTableModel {
-    List<shift_pic> sp;
+    private List<shift_pic> sp;
+    private final DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
     
     public TableShiftPic(List<shift_pic> sp) {
         this.sp = sp;
@@ -11,7 +13,7 @@ public class TableShiftPic extends AbstractTableModel {
     
     @Override
     public int getColumnCount() {
-        return 5;
+        return sp.size();
     }
     
     @Override
