@@ -32,8 +32,8 @@ public class ShiftPicController {
     
     public void isiTable() {
         sp = shiftDAO.getAll();
-        TableShiftPic model = new TableShiftPic(sp);
-        frame.gettTable().setModel(model);
+        TableShiftPic tsp = new TableShiftPic(sp);
+        frame.gettTable().setModel(tsp);
     }
     
     public void isiField(int row) {
@@ -48,9 +48,9 @@ public class ShiftPicController {
             shift_pic s = new shift_pic();
             s.setName(frame.gettfName().getText());
             s.setStart_check_time(LocalDateTime.now());
+            s.setEnd_check_time(null); // Atau LocalDateTime.now() jika database tidak mengizinkan null
             s.setNote(frame.gettfNote().getText());
             s.setIs_deleted(false);
-            // Tidak perlu set ID karena akan dihasilkan oleh AUTO_INCREMENT
             
             shiftDAO.insert(s);
             
@@ -61,24 +61,15 @@ public class ShiftPicController {
             JOptionPane.showMessageDialog(frame, "Name field cannot be empty.");
         }
     }
-    
+
+    // Metode overload untuk fleksibilitas
     public void insert(String name, LocalDateTime start, LocalDateTime end, String note) {
-        if (!name.trim().isEmpty()) {
-            shift_pic s = new shift_pic();
-            s.setName(name);
-            s.setStart_check_time(start);
-            s.setEnd_check_time(end);
-            s.setNote(note);
-            s.setIs_deleted(false);
-            
-            shiftDAO.insert(s);
-            
-            JOptionPane.showMessageDialog(null, "Successfully saved data.");
-            isiTable();
-            clear();
-        } else {
-            JOptionPane.showMessageDialog(frame, "Name field cannot be empty.");
-        }
+        // Isi field form dengan parameter
+        frame.gettfName().setText(name);
+        frame.gettfNote().setText(note);
+        
+        // Panggil metode utama
+        insert();
     }
     
     public void update() {
@@ -97,6 +88,8 @@ public class ShiftPicController {
             
             s.setEnd_check_time(LocalDateTime.now());
             s.setNote(frame.gettfNote().getText());
+            s.setIs_deleted(false);
+            
             shiftDAO.update(s);
             
             JOptionPane.showMessageDialog(null, "Successfully updated data.");
@@ -108,23 +101,13 @@ public class ShiftPicController {
     }
     
     public void update(int id, String name, LocalDateTime start, LocalDateTime end, String note) {
-        if (id > 0) {
-            shift_pic s = new shift_pic();
-            s.setIdShift(id);
-            s.setName(name);
-            s.setStart_check_time(start);
-            s.setEnd_check_time(end);
-            s.setNote(note);
-            s.setIs_deleted(false);
-            
-            shiftDAO.update(s);
-            
-            JOptionPane.showMessageDialog(null, "Successfully updated data.");
-            isiTable();
-            clear();
-        } else {
-            JOptionPane.showMessageDialog(frame, "Please select a shift first.");
-        }
+        // Isi field form dengan parameter
+        frame.gettfID().setText(String.valueOf(id));
+        frame.gettfName().setText(name);
+        frame.gettfNote().setText(note);
+        
+        // Panggil metode utama
+        update();
     }
     
     public void delete() {

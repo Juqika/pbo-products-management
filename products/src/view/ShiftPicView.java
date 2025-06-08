@@ -5,10 +5,7 @@
 package view;
 
 import controller.ShiftPicController;
-import java.time.LocalDateTime;
-import java.util.List;
 import javax.swing.JOptionPane;
-import model.shift_pic;
 /**
  *
  * @author windows 10
@@ -173,29 +170,24 @@ public class ShiftPicView extends javax.swing.JFrame {
     }//GEN-LAST:event_tfIDActionPerformed
 
     private void btnStartActionPerformed(java.awt.event.ActionEvent evt) {
-        String name = tfName.getText();
-        String note = tfNote.getText();
-        LocalDateTime now = LocalDateTime.now();
-        
-        sp.insert(name, now, null, note);
-        sp.clear(); // Tambahkan ini di akhir btnStartActionPerformed()
+        // Gunakan metode insert() yang sudah digabung
+        sp.insert();
     }
 
     private void btnStopActionPerformed(java.awt.event.ActionEvent evt) {
         // Get selected row
         int row = tTable.getSelectedRow();
         if (row >= 0) {
+            // Ambil ID dari tabel dan isi field form
             int id = (int) tTable.getValueAt(row, 0);
+            String name = (String) tTable.getValueAt(row, 1);
             
-            // Ambil data lengkap dari database
-            shift_pic selectedShift = sp.getShiftById(id);
-            if (selectedShift != null) {
-                String name = selectedShift.getName();
-                LocalDateTime start = selectedShift.getStart_check_time();
-                String note = tfNote.getText();
-                
-                sp.update(id, name, start, LocalDateTime.now(), note);
-            }
+            // Isi field form dengan data dari tabel
+            tfID.setText(String.valueOf(id));
+            tfName.setText(name);
+            
+            // Panggil metode update() yang sudah digabung
+            sp.update();
         } else {
             JOptionPane.showMessageDialog(this, "Please select a shift to stop");
         }
