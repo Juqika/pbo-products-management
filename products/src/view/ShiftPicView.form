@@ -21,15 +21,15 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="tfName" max="32767" attributes="0"/>
-                  <Component id="btnStart" alignment="1" pref="153" max="32767" attributes="0"/>
-                  <Component id="btnStop" alignment="1" pref="153" max="32767" attributes="0"/>
-                  <Component id="tfNote" alignment="1" max="32767" attributes="0"/>
-                  <Component id="tfID" alignment="1" max="32767" attributes="0"/>
+              <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                  <Component id="btnStart" alignment="0" pref="124" max="32767" attributes="0"/>
+                  <Component id="tfNote" alignment="0" max="32767" attributes="0"/>
+                  <Component id="tfName" alignment="0" max="32767" attributes="0"/>
+                  <Component id="tfID" alignment="0" max="32767" attributes="0"/>
+                  <Component id="btnStop" max="32767" attributes="0"/>
               </Group>
-              <EmptySpace max="-2" attributes="0"/>
-              <Component id="jScrollPane1" min="-2" pref="375" max="-2" attributes="0"/>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <Component id="jScrollPane1" pref="780" max="32767" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>

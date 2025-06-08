@@ -13,7 +13,7 @@ public class TableShiftPic extends AbstractTableModel {
     
     @Override
     public int getColumnCount() {
-        return sp.size();
+        return 5; // Jumlah kolom: id_shift, name, start_check_time, end_check_time, note
     }
     
     @Override
@@ -21,6 +21,7 @@ public class TableShiftPic extends AbstractTableModel {
         return sp.size();
     }
     
+    @Override
     public String getColumnName(int column) {
         switch (column) {
             case 0:
@@ -38,6 +39,7 @@ public class TableShiftPic extends AbstractTableModel {
         }
     }
     
+    @Override
     public Object getValueAt(int row, int column) {
         switch (column) {
             case 0:
@@ -45,14 +47,27 @@ public class TableShiftPic extends AbstractTableModel {
             case 1:
                 return sp.get(row).getName();
             case 2:
-                return sp.get(row).getStart_check_time();
+                return sp.get(row).getStart_check_time() != null ? 
+                       sp.get(row).getStart_check_time().format(df) : "";
             case 3:
-                return sp.get(row).getEnd_check_time();
+                return sp.get(row).getEnd_check_time() != null ? 
+                       sp.get(row).getEnd_check_time().format(df) : "";
             case 4:
                 return sp.get(row).getNote();
             default:
                 return null;
         }
     }
-
+    
+    // Tambahkan metode ini untuk menampilkan tanggal dalam format yang lebih baik
+    @Override
+    public Class<?> getColumnClass(int columnIndex) {
+        if (columnIndex == 0) {
+            return Integer.class;
+        } else if (columnIndex == 2 || columnIndex == 3) {
+            return String.class; // Menampilkan LocalDateTime sebagai String
+        } else {
+            return String.class;
+        }
+    }
 }

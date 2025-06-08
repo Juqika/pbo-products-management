@@ -105,14 +105,14 @@ public class ShiftPicView extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(10, 10, 10)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(tfName)
-                    .addComponent(btnStart, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 153, Short.MAX_VALUE)
-                    .addComponent(btnStop, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 153, Short.MAX_VALUE)
-                    .addComponent(tfNote, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(tfID, javax.swing.GroupLayout.Alignment.TRAILING))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(btnStart, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 124, Short.MAX_VALUE)
+                    .addComponent(tfNote, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(tfName, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(tfID, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnStop, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 780, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -161,12 +161,16 @@ public class ShiftPicView extends javax.swing.JFrame {
         int row = tTable.getSelectedRow();
         if (row >= 0) {
             int id = (int) tTable.getValueAt(row, 0);
-            String name = (String) tTable.getValueAt(row, 1);
-            LocalDateTime start = (LocalDateTime) tTable.getValueAt(row, 2);
-            String note = tfNote.getText();
             
-            sp.update(id, name, start, LocalDateTime.now(), note);
-            // Tidak perlu memanggil clear() karena sudah dipanggil di dalam update()
+            // Ambil data lengkap dari database
+            shift_pic selectedShift = sp.getShiftById(id);
+            if (selectedShift != null) {
+                String name = selectedShift.getName();
+                LocalDateTime start = selectedShift.getStart_check_time();
+                String note = tfNote.getText();
+                
+                sp.update(id, name, start, LocalDateTime.now(), note);
+            }
         } else {
             JOptionPane.showMessageDialog(this, "Please select a shift to stop");
         }

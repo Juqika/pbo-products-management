@@ -161,4 +161,8 @@ public class ShiftPicController {
         
         frame.gettfID().setText(String.valueOf(nextId));
     }
+    
+    public shift_pic getShiftById(int id) {
+        return shiftDAO.getById(id);
+    }
 }
