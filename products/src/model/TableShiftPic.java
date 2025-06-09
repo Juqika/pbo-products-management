@@ -26,7 +26,7 @@ public class TableShiftPic extends AbstractTableModel {
     public String getColumnName(int column) {
         switch (column) {
             case 0:
-                return "ID";
+                return "ID Shift";
             case 1:
                 return "Name";
             case 2:
@@ -70,5 +70,19 @@ public class TableShiftPic extends AbstractTableModel {
         } else {
             return String.class;
         }
+    }
+    
+    // Metode untuk memperbarui data
+    public void updateData(List<shift_pic> newData) {
+        this.sp = newData;
+        fireTableDataChanged();
+    }
+    
+    // Metode untuk mendapatkan objek shift_pic pada baris tertentu
+    public shift_pic getShiftPicAt(int row) {
+        if (row >= 0 && row < sp.size()) {
+            return sp.get(row);
+        }
+        return null;
     }
 }

@@ -27,24 +27,12 @@ public class shiftPicDAO implements shiftPicInterface {
         String sql = "INSERT INTO ShiftPic (id_employee, start, end, note, is_deleted) VALUES (?, ?, ?, ?, false)";
         try (PreparedStatement st = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             st.setInt(1, s.getIdEmployee());
-            
-            if (s.getStart_check_time() != null) {
-                st.setTimestamp(2, Timestamp.valueOf(s.getStart_check_time()));
-            } else {
-                st.setNull(2, java.sql.Types.TIMESTAMP);
-            }
-            
-            if (s.getEnd_check_time() != null) {
-                st.setTimestamp(3, Timestamp.valueOf(s.getEnd_check_time()));
-            } else {
-                st.setNull(3, java.sql.Types.TIMESTAMP);
-            }
-            
+            st.setTimestamp(2, s.getStart_check_time() != null ? Timestamp.valueOf(s.getStart_check_time()) : null);
+            st.setTimestamp(3, s.getEnd_check_time() != null ? Timestamp.valueOf(s.getEnd_check_time()) : null);
             st.setString(4, s.getNote());
             
             st.executeUpdate();
             
-            // Get the generated ID
             try (ResultSet rs = st.getGeneratedKeys()) {
                 if (rs.next()) {
                     s.setIdShift(rs.getInt(1));
@@ -60,25 +48,14 @@ public class shiftPicDAO implements shiftPicInterface {
         String sql = "UPDATE ShiftPic SET id_employee = ?, start = ?, end = ?, note = ? WHERE id_shift = ?";
         try (PreparedStatement st = conn.prepareStatement(sql)) {
             st.setInt(1, s.getIdEmployee());
-            
-            if (s.getStart_check_time() != null) {
-                st.setTimestamp(2, Timestamp.valueOf(s.getStart_check_time()));
-            } else {
-                st.setNull(2, java.sql.Types.TIMESTAMP);
-            }
-            
-            if (s.getEnd_check_time() != null) {
-                st.setTimestamp(3, Timestamp.valueOf(s.getEnd_check_time()));
-            } else {
-                st.setNull(3, java.sql.Types.TIMESTAMP);
-            }
-            
+            st.setTimestamp(2, s.getStart_check_time() != null ? Timestamp.valueOf(s.getStart_check_time()) : null);
+            st.setTimestamp(3, s.getEnd_check_time() != null ? Timestamp.valueOf(s.getEnd_check_time()) : null);
             st.setString(4, s.getNote());
             st.setInt(5, s.getIdShift());
             
             st.executeUpdate();
-        }catch(SQLException e){
-            System.out.println("error: "+ e.getMessage());
+        } catch (SQLException e) {
+            System.out.println("Error updating shift: " + e.getMessage());
             e.printStackTrace();
         }
     }

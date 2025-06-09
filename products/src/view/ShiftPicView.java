@@ -6,9 +6,7 @@ package view;
 
 import controller.ShiftPicController;
 import javax.swing.JOptionPane;
-import javax.swing.table.DefaultTableModel;
-import model.Employee;
-import java.util.List;
+
 /**
  *
  * @author windows 10
@@ -40,6 +38,13 @@ public class ShiftPicView extends javax.swing.JFrame {
         
         // Isi tabel
         sp.isiTable();
+        
+        // Tambahkan event listener untuk tabel
+        tTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tTableMouseClicked(evt);
+            }
+        });
     }
     
     /**
@@ -229,6 +234,13 @@ public class ShiftPicView extends javax.swing.JFrame {
             sp.update(idShift);
         } else {
             JOptionPane.showMessageDialog(this, "Please select a shift");
+        }
+    }
+
+    private void tTableMouseClicked(java.awt.event.MouseEvent evt) {
+        int row = tTable.getSelectedRow();
+        if (row >= 0) {
+            sp.isiField(row);
         }
     }
     

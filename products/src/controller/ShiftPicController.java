@@ -14,25 +14,32 @@ import dao_interface.EmployeeInterface;
 import model.Employee;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import javax.swing.JOptionPane;
-import javax.swing.table.DefaultTableModel;
 
 public class ShiftPicController {
     private ShiftPicView frame;
     private final shiftPicInterface shiftDAO;
     private final EmployeeInterface employeeDAO;
     private List<shift_pic> sp;
+    private TableShiftPic tableModel;
     
     public ShiftPicController(ShiftPicView frame) {
         this.frame = frame;
         this.shiftDAO = new shiftPicDAO();
         this.employeeDAO = new EmployeeDAO();
+        refreshData();
+        
+        // Inisialisasi model tabel
+        tableModel = new TableShiftPic(sp);
+        frame.gettTable().setModel(tableModel);
+    }
+    
+    // Metode untuk refresh data dari database
+    private void refreshData() {
         sp = shiftDAO.getAll();
     }
     
-    // Jika perlu menampilkan daftar employee di suatu tempat
     public List<Employee> getEmployees() {
         return ((shiftPicDAO)shiftDAO).getEmployees();
     }
@@ -42,52 +49,36 @@ public class ShiftPicController {
     }
     
     public void isiTable() {
-        // Ambil semua data shift_pic yang sudah termasuk nama employee
-        sp = shiftDAO.getAll();
+        refreshData();
         
-        // Buat model tabel sederhana
-        DefaultTableModel model = new DefaultTableModel();
-        model.addColumn("ID Shift");
-        model.addColumn("Employee");
-        model.addColumn("Start Time");
-        model.addColumn("End Time");
-        model.addColumn("Note");
-        
-        // Format datetime
-        DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        
-        // Isi model dengan data
-        for (shift_pic s : sp) {
-            String startTime = s.getStart_check_time() != null ? s.getStart_check_time().format(df) : "";
-            String endTime = s.getEnd_check_time() != null ? s.getEnd_check_time().format(df) : "";
-            
-            model.addRow(new Object[]{
-                s.getIdShift(),
-                s.getName(),
-                startTime,
-                endTime,
-                s.getNote()
-            });
+        // Update model tabel dengan data baru
+        if (tableModel == null) {
+            tableModel = new TableShiftPic(sp);
+            frame.gettTable().setModel(tableModel);
+        } else {
+            tableModel.updateData(sp);
         }
-        
-        // Set model ke tabel
-        frame.gettTable().setModel(model);
     }
     
     public void isiField(int row) {
-        // Jika kita tidak lagi menggunakan field ID, kita hanya perlu mengisi field note
-        frame.gettfNote().setText(sp.get(row).getNote());
+        if (row >= 0 && row < sp.size()) {
+            frame.gettfNote().setText(sp.get(row).getNote());
+            
+            // Set selected employee in ComboBox
+            String employeeName = sp.get(row).getName();
+            if (employeeName != null && !employeeName.isEmpty()) {
+                frame.getCbName().setSelectedItem(employeeName);
+            }
+        }
     }
     
     public void insert() {
-        // Ambil nama employee dari ComboBox
         String employeeName = (String) frame.getCbName().getSelectedItem();
         if (employeeName == null || employeeName.isEmpty()) {
             JOptionPane.showMessageDialog(frame, "Please select an employee");
             return;
         }
         
-        // Dapatkan ID employee berdasarkan nama
         int employeeId = getEmployeeIdByName(employeeName);
         if (employeeId == -1) {
             JOptionPane.showMessageDialog(frame, "Employee not found");
@@ -96,11 +87,7 @@ public class ShiftPicController {
         
         shift_pic s = new shift_pic();
         s.setIdEmployee(employeeId);
-        
-        // Set waktu mulai ke waktu sekarang
-        LocalDateTime now = LocalDateTime.now();
-        s.setStart_check_time(now);
-        s.setEnd_check_time(null);
+        s.setStart_check_time(LocalDateTime.now());
         s.setNote(frame.gettfNote().getText());
         s.setIs_deleted(false);
         
@@ -112,37 +99,29 @@ public class ShiftPicController {
     }
     
     public void update(int idShift) {
-        // Ambil nama employee dari ComboBox
         String employeeName = (String) frame.getCbName().getSelectedItem();
         if (employeeName == null || employeeName.isEmpty()) {
             JOptionPane.showMessageDialog(frame, "Please select an employee");
             return;
         }
         
-        // Dapatkan ID employee berdasarkan nama
         int employeeId = getEmployeeIdByName(employeeName);
         if (employeeId == -1) {
             JOptionPane.showMessageDialog(frame, "Employee not found");
             return;
         }
         
-        shift_pic s = new shift_pic();
-        s.setIdShift(idShift);
-        s.setIdEmployee(employeeId);
-        
-        // Get the existing shift to preserve start time
         shift_pic existing = shiftDAO.getById(idShift);
-        if (existing != null) {
-            s.setStart_check_time(existing.getStart_check_time());
-        } else {
-            s.setStart_check_time(LocalDateTime.now());
+        if (existing == null) {
+            JOptionPane.showMessageDialog(frame, "Shift not found");
+            return;
         }
         
-        s.setEnd_check_time(LocalDateTime.now());
-        s.setNote(frame.gettfNote().getText());
-        s.setIs_deleted(false);
+        existing.setIdEmployee(employeeId);
+        existing.setEnd_check_time(LocalDateTime.now());
+        existing.setNote(frame.gettfNote().getText());
         
-        shiftDAO.update(s);
+        shiftDAO.update(existing);
         
         JOptionPane.showMessageDialog(null, "Successfully updated data.");
         isiTable();
@@ -150,7 +129,6 @@ public class ShiftPicController {
     }
     
     public void delete(int idShift) {
-        // Tambahkan konfirmasi sebelum menghapus
         int confirm = JOptionPane.showConfirmDialog(frame, 
                 "Are you sure you want to delete this shift?", 
                 "Confirm Delete", 
@@ -173,14 +151,12 @@ public class ShiftPicController {
         }
     }
 
-    // Metode untuk mendapatkan ID employee berdasarkan nama
     public int getEmployeeIdByName(String name) {
-        List<Employee> employees = getEmployees();
-        for (Employee e : employees) {
+        for (Employee e : getEmployees()) {
             if (e.getName().equals(name)) {
                 return e.getId_employee();
             }
         }
-        return -1; // Return -1 jika tidak ditemukan
+        return -1;
     }
 }
