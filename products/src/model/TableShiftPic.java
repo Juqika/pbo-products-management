@@ -2,6 +2,7 @@ package model;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import javax.swing.table.AbstractTableModel;
+import java.time.LocalDateTime;
 
 public class TableShiftPic extends AbstractTableModel {
     private List<shift_pic> sp;
@@ -25,15 +26,15 @@ public class TableShiftPic extends AbstractTableModel {
     public String getColumnName(int column) {
         switch (column) {
             case 0:
-                return "id_shift";
+                return "ID";
             case 1:
-                return "name";
+                return "Name";
             case 2:
-                return "start_check_time";
+                return "Start Time";
             case 3:
-                return "end_check_time";
+                return "End Time";
             case 4:
-                return "note";
+                return "Note";
             default:
                 return null;
         }
@@ -47,11 +48,11 @@ public class TableShiftPic extends AbstractTableModel {
             case 1:
                 return sp.get(row).getName();
             case 2:
-                return sp.get(row).getStart_check_time() != null ? 
-                       sp.get(row).getStart_check_time().format(df) : "";
+                LocalDateTime startTime = sp.get(row).getStart_check_time();
+                return startTime != null ? startTime.format(df) : "";
             case 3:
-                return sp.get(row).getEnd_check_time() != null ? 
-                       sp.get(row).getEnd_check_time().format(df) : "";
+                LocalDateTime endTime = sp.get(row).getEnd_check_time();
+                return endTime != null ? endTime.format(df) : "";
             case 4:
                 return sp.get(row).getNote();
             default:

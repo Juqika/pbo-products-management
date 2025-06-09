@@ -60,7 +60,7 @@ public class shift_pic {
         this.note = note;
     }
 
-    public boolean isIs_deleted() {
+    public boolean getIs_deleted() {
         return is_deleted;
     }
 

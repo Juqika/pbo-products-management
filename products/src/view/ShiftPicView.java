@@ -6,6 +6,9 @@ package view;
 
 import controller.ShiftPicController;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import model.Employee;
+import java.util.List;
 /**
  *
  * @author windows 10
@@ -18,7 +21,7 @@ public class ShiftPicView extends javax.swing.JFrame {
         initComponents();
         
         // Set ukuran frame
-        setSize(950, 380);
+        setSize(950, 480);
         
         // Set lokasi frame di tengah layar
         setLocationRelativeTo(null);
@@ -32,7 +35,6 @@ public class ShiftPicView extends javax.swing.JFrame {
         // Inisialisasi controller dan isi tabel
         sp = new ShiftPicController(this);
         sp.isiTable();
-        sp.setAutoID();
     }
     
     /**
@@ -46,13 +48,11 @@ public class ShiftPicView extends javax.swing.JFrame {
 
         jScrollPane1 = new javax.swing.JScrollPane();
         tTable = new javax.swing.JTable();
-        tfName = new javax.swing.JTextField();
         btnStart = new javax.swing.JButton();
         btnStop = new javax.swing.JButton();
         tfNote = new javax.swing.JTextField();
-        tfID = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
+        btnDeleted = new javax.swing.JButton();
 
         tTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -75,13 +75,6 @@ public class ShiftPicView extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(tTable);
 
-        tfName.setText("nama");
-        tfName.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                tfNameActionPerformed(evt);
-            }
-        });
-
         btnStart.setText("Start");
         btnStart.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -96,23 +89,33 @@ public class ShiftPicView extends javax.swing.JFrame {
             }
         });
 
-        tfNote.setText("note");
         tfNote.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 tfNoteActionPerformed(evt);
             }
         });
 
-        tfID.setText("ID");
-        tfID.addActionListener(new java.awt.event.ActionListener() {
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel1.setText("Note :");
+
+        btnDeleted.setText("Deleted");
+        btnDeleted.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                tfIDActionPerformed(evt);
+                btnDeletedActionPerformed(evt);
             }
         });
 
-        jLabel1.setText("note :");
-
-        jLabel2.setText("name :");
+        // Tambahkan event handler untuk klik pada tabel
+        tTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                int row = tTable.getSelectedRow();
+                if (row >= 0) {
+                    // Isi field note dengan data dari tabel
+                    String note = (String) tTable.getValueAt(row, 4);
+                    tfNote.setText(note);
+                }
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -121,39 +124,33 @@ public class ShiftPicView extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(10, 10, 10)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(btnStart, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 124, Short.MAX_VALUE)
-                        .addComponent(tfNote, javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(tfName, javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(tfID, javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(btnStop, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel1))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 780, Short.MAX_VALUE)
+                    .addComponent(btnStart, javax.swing.GroupLayout.DEFAULT_SIZE, 169, Short.MAX_VALUE)
+                    .addComponent(btnStop, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnDeleted, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel1)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 741, Short.MAX_VALUE)
+                    .addComponent(tfNote))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(tfID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(tfName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(tfNote, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(1, 1, 1)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(tfNote, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
                         .addComponent(btnStart, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnStop, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap())
+                        .addComponent(btnStop, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnDeleted, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -161,35 +158,45 @@ public class ShiftPicView extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_tfNoteActionPerformed
 
-    private void tfNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfNameActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_tfNameActionPerformed
-
-    private void tfIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfIDActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_tfIDActionPerformed
+    private void btnDeletedActionPerformed(java.awt.event.ActionEvent evt) {
+        // Get selected row
+        int row = tTable.getSelectedRow();
+        if (row >= 0) {
+            // Ambil ID dari tabel
+            int id = (int) tTable.getValueAt(row, 0);
+            
+            // Panggil metode delete() dari controller dengan ID
+            sp.delete(id);
+        } else {
+            JOptionPane.showMessageDialog(this, "Please select an employee");
+        }
+    }
 
     private void btnStartActionPerformed(java.awt.event.ActionEvent evt) {
-        // Gunakan metode insert() yang sudah digabung
-        sp.insert();
+        // Get selected row
+        int row = tTable.getSelectedRow();
+        if (row >= 0) {
+            // Ambil ID dari tabel
+            int id = (int) tTable.getValueAt(row, 0);
+            
+            // Panggil metode insert() dari controller dengan ID
+            sp.insert(id);
+        } else {
+            JOptionPane.showMessageDialog(this, "Please select an employee");
+        }
     }
 
     private void btnStopActionPerformed(java.awt.event.ActionEvent evt) {
         // Get selected row
         int row = tTable.getSelectedRow();
         if (row >= 0) {
-            // Ambil ID dari tabel dan isi field form
+            // Ambil ID dari tabel
             int id = (int) tTable.getValueAt(row, 0);
-            String name = (String) tTable.getValueAt(row, 1);
             
-            // Isi field form dengan data dari tabel
-            tfID.setText(String.valueOf(id));
-            tfName.setText(name);
-            
-            // Panggil metode update() yang sudah digabung
-            sp.update();
+            // Panggil metode update() dari controller dengan ID
+            sp.update(id);
         } else {
-            JOptionPane.showMessageDialog(this, "Please select a shift to stop");
+            JOptionPane.showMessageDialog(this, "Please select an employee");
         }
     }
     
@@ -216,26 +223,16 @@ public class ShiftPicView extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnDeleted;
     private javax.swing.JButton btnStart;
     private javax.swing.JButton btnStop;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tTable;
-    private javax.swing.JTextField tfID;
-    private javax.swing.JTextField tfName;
     private javax.swing.JTextField tfNote;
     // End of variables declaration//GEN-END:variables
 
     // Metode getter yang diperlukan di ShiftPicView
-
-    public javax.swing.JTextField gettfID() {
-        return tfID;
-    }
-
-    public javax.swing.JTextField gettfName() {
-        return tfName;
-    }
 
     public javax.swing.JTextField gettfNote() {
         return tfNote;

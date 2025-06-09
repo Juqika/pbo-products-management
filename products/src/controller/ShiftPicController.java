@@ -9,143 +9,129 @@ import dao.shiftPicDAO;
 import model.shift_pic;
 import model.TableShiftPic;
 import view.ShiftPicView;
+import dao.EmployeeDAO;
+import dao_interface.EmployeeInterface;
+import model.Employee;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 public class ShiftPicController {
     private ShiftPicView frame;
     private final shiftPicInterface shiftDAO;
+    private final EmployeeInterface employeeDAO;
     private List<shift_pic> sp;
     
     public ShiftPicController(ShiftPicView frame) {
         this.frame = frame;
         this.shiftDAO = new shiftPicDAO();
+        this.employeeDAO = new EmployeeDAO();
         sp = shiftDAO.getAll();
     }
     
+    // Jika perlu menampilkan daftar employee di suatu tempat
+    public List<Employee> getEmployees() {
+        return ((shiftPicDAO)shiftDAO).getEmployees();
+    }
+    
     public void clear() {
-        frame.gettfName().setText("");
         frame.gettfNote().setText("");
     }
     
     public void isiTable() {
+        // Ambil semua data shift_pic yang sudah termasuk nama employee
         sp = shiftDAO.getAll();
-        TableShiftPic tsp = new TableShiftPic(sp);
-        frame.gettTable().setModel(tsp);
+        
+        // Buat model tabel sederhana
+        DefaultTableModel model = new DefaultTableModel();
+        model.addColumn("ID");
+        model.addColumn("Name");
+        model.addColumn("Start Time");
+        model.addColumn("End Time");
+        model.addColumn("Note");
+        
+        // Format datetime
+        DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        
+        // Isi model dengan data
+        for (shift_pic s : sp) {
+            String startTime = s.getStart_check_time() != null ? s.getStart_check_time().format(df) : "";
+            String endTime = s.getEnd_check_time() != null ? s.getEnd_check_time().format(df) : "";
+            
+            model.addRow(new Object[]{
+                s.getIdShift(),
+                s.getName(),
+                startTime,
+                endTime,
+                s.getNote()
+            });
+        }
+        
+        // Set model ke tabel
+        frame.gettTable().setModel(model);
     }
     
     public void isiField(int row) {
-        frame.gettfID().setText(String.valueOf(sp.get(row).getIdShift()));
-        frame.gettfName().setText(sp.get(row).getName());
+        // Jika kita tidak lagi menggunakan field ID, kita hanya perlu mengisi field note
         frame.gettfNote().setText(sp.get(row).getNote());
-        // Tidak perlu mengisi field start dan end karena biasanya diisi otomatis
     }
     
-    public void insert() {
-        if (!frame.gettfName().getText().trim().isEmpty()) {
-            shift_pic s = new shift_pic();
-            s.setName(frame.gettfName().getText());
+    public void insert(int employeeId) {
+        shift_pic s = new shift_pic();
+        s.setIdShift(employeeId);
+        
+        // Set waktu mulai ke waktu sekarang
+        LocalDateTime now = LocalDateTime.now();
+        s.setStart_check_time(now);
+        s.setEnd_check_time(null);
+        s.setNote(frame.gettfNote().getText());
+        s.setIs_deleted(false);
+        
+        shiftDAO.insert(s);
+        
+        JOptionPane.showMessageDialog(null, "Successfully saved data.");
+        isiTable();
+        clear();
+    }
+    
+    public void update(int employeeId) {
+        shift_pic s = new shift_pic();
+        s.setIdShift(employeeId);
+        
+        // Get the existing shift to preserve start time
+        shift_pic existing = shiftDAO.getById(s.getIdShift());
+        if (existing != null) {
+            s.setStart_check_time(existing.getStart_check_time());
+        } else {
             s.setStart_check_time(LocalDateTime.now());
-            s.setEnd_check_time(null); // Atau LocalDateTime.now() jika database tidak mengizinkan null
-            s.setNote(frame.gettfNote().getText());
-            s.setIs_deleted(false);
-            
-            shiftDAO.insert(s);
-            
-            JOptionPane.showMessageDialog(null, "Successfully saved data.");
-            isiTable();
-            clear();
-        } else {
-            JOptionPane.showMessageDialog(frame, "Name field cannot be empty.");
         }
-    }
-
-    // Metode overload untuk fleksibilitas
-    public void insert(String name, LocalDateTime start, LocalDateTime end, String note) {
-        // Isi field form dengan parameter
-        frame.gettfName().setText(name);
-        frame.gettfNote().setText(note);
         
-        // Panggil metode utama
-        insert();
-    }
-    
-    public void update() {
-        if (!frame.gettfID().getText().trim().isEmpty()) {
-            shift_pic s = new shift_pic();
-            s.setIdShift(Integer.parseInt(frame.gettfID().getText()));
-            s.setName(frame.gettfName().getText());
-            
-            // Get the existing shift to preserve start time
-            shift_pic existing = shiftDAO.getById(s.getIdShift());
-            if (existing != null) {
-                s.setStart_check_time(existing.getStart_check_time());
-            } else {
-                s.setStart_check_time(LocalDateTime.now());
-            }
-            
-            s.setEnd_check_time(LocalDateTime.now());
-            s.setNote(frame.gettfNote().getText());
-            s.setIs_deleted(false);
-            
-            shiftDAO.update(s);
-            
-            JOptionPane.showMessageDialog(null, "Successfully updated data.");
-            isiTable();
-            clear();
-        } else {
-            JOptionPane.showMessageDialog(frame, "Please select a shift first.");
-        }
-    }
-    
-    public void update(int id, String name, LocalDateTime start, LocalDateTime end, String note) {
-        // Isi field form dengan parameter
-        frame.gettfID().setText(String.valueOf(id));
-        frame.gettfName().setText(name);
-        frame.gettfNote().setText(note);
+        s.setEnd_check_time(LocalDateTime.now());
+        s.setNote(frame.gettfNote().getText());
+        s.setIs_deleted(false);
         
-        // Panggil metode utama
-        update();
+        shiftDAO.update(s);
+        
+        JOptionPane.showMessageDialog(null, "Successfully updated data.");
+        isiTable();
+        clear();
     }
     
-    public void delete() {
-        if (!frame.gettfID().getText().trim().isEmpty()) {
-            int id = Integer.parseInt(frame.gettfID().getText());
-            shiftDAO.delete(id);
+    public void delete(int employeeId) {
+        // Tambahkan konfirmasi sebelum menghapus
+        int confirm = JOptionPane.showConfirmDialog(frame, 
+                "Are you sure you want to delete this shift?", 
+                "Confirm Delete", 
+                JOptionPane.YES_NO_OPTION);
+        
+        if (confirm == JOptionPane.YES_OPTION) {
+            shiftDAO.delete(employeeId);
             JOptionPane.showMessageDialog(null, "Successfully deleted data.");
             isiTable();
             clear();
-        } else {
-            JOptionPane.showMessageDialog(frame, "Choose the data first.");
         }
-    }
-    
-    public void setAutoID() {
-        // Assuming you have a method to get next ID in your DAO
-        // If not, you need to implement it similar to EmployeeDAO
-        int nextId = 1; // Default value
-        try {
-            // Get the highest ID and add 1
-            List<shift_pic> allShifts = shiftDAO.getAll();
-            if (!allShifts.isEmpty()) {
-                int maxId = 0;
-                for (shift_pic s : allShifts) {
-                    if (s.getIdShift() > maxId) {
-                        maxId = s.getIdShift();
-                    }
-                }
-                nextId = maxId + 1;
-            }
-        } catch (Exception e) {
-            System.out.println("Error getting next ID: " + e.getMessage());
-        }
-        
-        frame.gettfID().setText(String.valueOf(nextId));
-    }
-    
-    public shift_pic getShiftById(int id) {
-        return shiftDAO.getById(id);
     }
 }
