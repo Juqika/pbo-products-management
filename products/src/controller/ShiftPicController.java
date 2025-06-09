@@ -9,8 +9,6 @@ import dao.shiftPicDAO;
 import model.shift_pic;
 import model.TableShiftPic;
 import view.ShiftPicView;
-import dao.EmployeeDAO;
-import dao_interface.EmployeeInterface;
 import model.Employee;
 
 import java.time.LocalDateTime;
@@ -20,14 +18,12 @@ import javax.swing.JOptionPane;
 public class ShiftPicController {
     private ShiftPicView frame;
     private final shiftPicInterface shiftDAO;
-    private final EmployeeInterface employeeDAO;
     private List<shift_pic> sp;
     private TableShiftPic tableModel;
     
     public ShiftPicController(ShiftPicView frame) {
         this.frame = frame;
         this.shiftDAO = new shiftPicDAO();
-        this.employeeDAO = new EmployeeDAO();
         refreshData();
         
         // Inisialisasi model tabel
