@@ -11,8 +11,7 @@ import java.time.LocalDateTime;
  * @author windows 10
  */
 public class shift_pic {
-    private int idShift;
-    private int idEmployee;
+    private int idShift, idEmployee;
     private String name, note;
     private LocalDateTime start_check_time, end_check_time;
     private boolean is_deleted;
