@@ -34,7 +34,7 @@ public class EmployeeController {
         frame.getTxtID().setText("");
         frame.getTxtName().setText("");
         frame.getGenderComboBox().setSelectedIndex(0);
-        setAutoID(); // Tambahkan ini di dalam clear()
+        setAutoID(); 
 
         }
     public void isiTable() {
@@ -89,23 +89,47 @@ public class EmployeeController {
          }
      }
     
-    public void isiTableSearchName() {
-         lb = impleEmployee.getSearchName(frame.getTxtSearchName().getText());
-         TableEmployeeModel tme = new TableEmployeeModel(lb);
-         frame.getTableData().setModel(tme);
-     }
-    
-    public void searchName() {
-         if (!frame.getTxtSearchName().getText().trim().isEmpty()) {
-             impleEmployee.getSearchName(frame.getTxtSearchName().getText());
-             isiTableSearchName();
-         } else {
-             JOptionPane.showMessageDialog(frame, "Please choose the data.");
-         }
-     }
-    
+    public void isiTableSearch() {
+        String nameText = frame.getTxtSearchName().getText().trim();
+        Integer id = null;
+        String name = null;
+
+        if (!nameText.isEmpty()) {
+            name = nameText;
+        }
+
+        List<Employee> lb = impleEmployee.searchByIdOrName(id, name);
+
+        TableEmployeeModel tme = new TableEmployeeModel(lb);
+        frame.getTableData().setModel(tme);
+    }
+
+    public void searchByIdOrName() {
+        String searchText = frame.getTxtSearchName().getText().trim();
+
+        List<Employee> results;
+
+        if (searchText.isEmpty() || searchText.equals("0")) {
+            results = impleEmployee.getAll();
+        } else {
+            Integer id = null;
+            String name = null;
+
+            try {
+                id = Integer.parseInt(searchText);
+            } catch (NumberFormatException e) {
+                name = searchText;
+            }
+
+            results = impleEmployee.searchByIdOrName(id, name);
+        }
+
+        TableEmployeeModel tme = new TableEmployeeModel(results);
+        frame.getTableData().setModel(tme);
+    }
+
     public void setAutoID() {
-        int nextId = impleEmployee.getNextEmployeeId();
+        int nextId = impleEmployee.getNextEmployeed();
         frame.getTxtID().setText(String.valueOf(nextId));
     }
 }

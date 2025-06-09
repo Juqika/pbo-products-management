@@ -1,8 +1,5 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package dao;
+
 import connection.connect;
 import dao_interface.ProductInterface;
 import model.Product;
@@ -16,7 +13,8 @@ import java.util.List;
  * @author windows 10
  */
 public class ProductDAO implements ProductInterface {
-       Connection conn;
+    
+    Connection conn;
     
     public ProductDAO() {
         conn = connect.getcC();
@@ -24,11 +22,12 @@ public class ProductDAO implements ProductInterface {
     
     @Override
     public void insert(Product p) {
-        String sql = "INSERT INTO products (name, type, qty, is_deleted) VALUES (?, ?, ?, false)";
+        String sql = "INSERT INTO products (name, type, qty, is_deleted,is_available) VALUES (?, ?, ?, false, ?)";
         try (PreparedStatement st = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             st.setString(1, p.getName());
             st.setString(2, p.getType());
             st.setInt(3, p.getQty());
+            st.setBoolean(4, p.isIs_available());
             st.executeUpdate();
             
             // Get the auto-generated ID
@@ -45,12 +44,13 @@ public class ProductDAO implements ProductInterface {
     
     @Override
     public void update(Product p) {
-        String sql = "UPDATE products SET name = ?, type = ?, qty = ? WHERE id_product = ?";
+        String sql = "UPDATE products SET name = ?, type = ?, qty = ?, is_available = ? WHERE id_product = ?";
         try (PreparedStatement st = conn.prepareStatement(sql)) {
             st.setString(1, p.getName());
             st.setString(2, p.getType());
             st.setInt(3, p.getQty());
-            st.setInt(4, p.getIdProduct());
+            st.setBoolean(4, p.isIs_available());
+            st.setInt(5, p.getIdProduct());
             int rowsAffected = st.executeUpdate();
             
             if (rowsAffected == 0) {
@@ -92,6 +92,7 @@ public class ProductDAO implements ProductInterface {
                 p.setType(rs.getString("type"));
                 p.setQty(rs.getInt("qty"));
                 p.setIs_deleted(rs.getBoolean("is_deleted"));
+                p.setIs_available(rs.getBoolean("is_available"));
                 list.add(p);
             }
         } catch (SQLException e) {
@@ -101,35 +102,43 @@ public class ProductDAO implements ProductInterface {
         return list;
     }
     
-  @Override
-public List<Product> searchByIdOrName(int id, String name) {
-    List<Product> list = new ArrayList<>();
-    // SQL dengan OR untuk mencari baik ID maupun nama
-    String sql = "SELECT * FROM products WHERE (id_product = ? OR name LIKE ?) AND is_deleted = false";
-    
-    try (PreparedStatement st = conn.prepareStatement(sql)) {
-        // Set parameter ID (pencarian exact match)
-        st.setInt(1, id);
-        // Set parameter nama (pencarian partial dengan wildcard)
-        st.setString(2, "%" + name + "%");
-        
-        try (ResultSet rs = st.executeQuery()) {
-            while (rs.next()) {
-                Product p = new Product();
-                p.setIdProduct(rs.getInt("id_product"));
-                p.setName(rs.getString("name"));
-                p.setType(rs.getString("type"));
-                p.setQty(rs.getInt("qty"));
-                p.setIs_deleted(rs.getBoolean("is_deleted"));
-                list.add(p);
-            }
+    @Override
+    public List<Product> searchByIdOrName(Integer id, String name) {
+        List<Product> list = new ArrayList<>();
+
+        String sql = "SELECT * FROM products WHERE is_deleted = false"
+                   + (id   != null && id   > 0 ? " AND id_product = ?"   : "")
+                   + (name != null && !name.trim().isEmpty() ? " AND name LIKE ?" : "");
+
+        if ((id == null || id <= 0) && (name == null || name.trim().isEmpty())) {
+            return list;
         }
-    } catch (SQLException e) {
-        System.out.println("Error searching products by ID or name: " + e.getMessage());
-        throw new RuntimeException("Failed to search products", e);
+
+        try (PreparedStatement st = conn.prepareStatement(sql)) {
+            int idx = 1;
+            if (id != null && id > 0) {
+                st.setInt(idx++, id);
+            }
+            if (name != null && !name.trim().isEmpty()) {
+                st.setString(idx++, "%" + name + "%");
+            }
+
+            try (ResultSet rs = st.executeQuery()) {
+                while (rs.next()) {
+                    Product p = new Product();
+                    p.setIdProduct(rs.getInt("id_product"));
+                    p.setName(rs.getString("name"));
+                    p.setType(rs.getString("type"));
+                    p.setQty(rs.getInt("qty"));
+                    p.setIs_available(rs.getBoolean("is_available"));
+                    list.add(p);
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Error searching by ID or name: " + e.getMessage());
+        }
+        return list;
     }
-    return list;
-}
     
         @Override
         public int getNextProductId() {
@@ -144,6 +153,6 @@ public List<Product> searchByIdOrName(int id, String name) {
             System.out.println("Error getting next product ID: " + e.getMessage());
             throw new RuntimeException("Failed to get next product ID", e);
         }
-        return 1; // Jika tidak ada data sama sekali
+        return 1; 
     }
 }

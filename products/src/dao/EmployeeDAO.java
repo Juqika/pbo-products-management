@@ -97,31 +97,47 @@ public class EmployeeDAO implements EmployeeInterface {
         return list;
     }
 
+    
     @Override
-    public List<Employee> getSearchName(String name) {
+    public List<Employee> searchByIdOrName(Integer id, String name) {
         List<Employee> list = new ArrayList<>();
-        String sql = "SELECT * FROM employees WHERE name LIKE ? AND is_deleted = false";
+
+        String sql = "SELECT * FROM employees WHERE is_deleted = false"
+                   + (id   != null && id   > 0           ? " AND id_employee = ?" : "")
+                   + (name != null && !name.trim().isEmpty() ? " AND name LIKE ?" : "");
+        if ((id == null || id <= 0) && (name == null || name.trim().isEmpty())) {
+            return list;
+        }
+
         try (PreparedStatement st = conn.prepareStatement(sql)) {
-            st.setString(1, "%" + name + "%");
+            int idx = 1;
+            if (id != null && id > 0) {
+                st.setInt(idx++, id);
+            }
+            if (name != null && !name.trim().isEmpty()) {
+                st.setString(idx++, "%" + name.trim() + "%");
+            }
+
             try (ResultSet rs = st.executeQuery()) {
                 while (rs.next()) {
                     Employee emp = new Employee();
-                    emp.setId_employee(rs.getInt("id_employee"));
-                    emp.setName(rs.getString("name"));
-                    emp.setGender(rs.getString("gender"));
-                    emp.setIs_deleted(rs.getBoolean("is_deleted"));
+                    emp.setId_employee(   rs.getInt("id_employee"));
+                    emp.setName(          rs.getString("name"));
+                    emp.setGender(        rs.getString("gender"));
+                    emp.setIs_deleted(    rs.getBoolean("is_deleted"));
                     list.add(emp);
                 }
             }
-        } catch (SQLException ex) {
-            System.out.println("Error searching employees: " + ex.getMessage());
-            throw new RuntimeException("Failed to search employees", ex);
+        } catch (SQLException e) {
+            System.err.println("Error searching employees: " + e.getMessage());
+            throw new RuntimeException("Failed to search employees", e);
         }
         return list;
     }
-    
+
+
     @Override
-        public int getNextEmployeeId() {
+        public int getNextEmployeed() {
         String sql = "SELECT MAX(id_employee) AS max_id FROM employees";
         try (PreparedStatement st = conn.prepareStatement(sql);
              ResultSet rs = st.executeQuery()) {

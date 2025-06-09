@@ -6,6 +6,7 @@ package dao_interface;
 
 import java.util.List;
 import model.Employee;
+import model.Product;
 
 /**
  *
@@ -15,7 +16,7 @@ public interface EmployeeInterface {
     void insert (Employee e);
     void update(Employee e);
     void delete(int id);
-    int getNextEmployeeId();
+    int getNextEmployeed();
     List<Employee> getAll();
-    List<Employee> getSearchName(String name);
+    List<Employee> searchByIdOrName(Integer id, String name);
 }

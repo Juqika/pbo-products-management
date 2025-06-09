@@ -19,7 +19,7 @@ public class TableEmployeeModel extends AbstractTableModel {
     
         @Override
     public int getColumnCount() {
-        return 4;
+        return 3;
     }
     
     @Override
@@ -30,13 +30,11 @@ public class TableEmployeeModel extends AbstractTableModel {
     public String getColumnName(int column) {
         switch (column) {
             case 0:
-                return "id_employee";
+                return "ID";
             case 1:
-                return "name";
+                return "Name";
             case 2:
-                return "gender";
-             case 3:
-                return "is_deleted";
+                return "Gender";
               default:
                 return null;          
         }
@@ -50,8 +48,6 @@ public class TableEmployeeModel extends AbstractTableModel {
                 return lb.get(row).getName();
             case 2:
                 return lb.get(row).getGender();
-            case 3:
-                return lb.get(row).isIs_deleted();
             default:
                 return null;
         }

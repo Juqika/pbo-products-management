@@ -12,12 +12,13 @@ import view.ProductView;
 
 import java.util.List;
 import javax.swing.JOptionPane;
+
 /**
  *
  * @author windows 10
  */
 public class ProductController {
-    ProductView frame;
+        ProductView frame;
         ProductInterface implProduct;
         
         List<Product> lb;
@@ -33,7 +34,7 @@ public class ProductController {
             frame.getTxtName().setText("");
             frame.getTypeComboBox().setSelectedIndex(0);
             frame.getQty().setText("");
-            setAutoID(); // Tambahkan ini di dalam clear()
+            setAutoID(); 
 
         }
     
@@ -48,6 +49,7 @@ public class ProductController {
         frame.getTxtName().setText(lb.get(row).getName());
         frame.getTypeComboBox().setSelectedItem(lb.get(row).getType());
         frame.getQty().setText(String.valueOf(lb.get(row).getQty()));
+        frame.getAvailableCheckBox().setSelected(lb.get(row).isIs_available());
     }
     
     public void insert() {
@@ -58,6 +60,7 @@ public class ProductController {
             product.setType(frame.getTypeComboBox().getSelectedItem().toString());
             product.setQty(Integer.parseInt(frame.getQty().getText()));
             product.setIs_deleted(false);  // Default to false for new products
+            product.setIs_available(frame.getAvailableCheckBox().isSelected());
             implProduct.insert(product);
             
             JOptionPane.showMessageDialog(null, "Successfully saved data.");
@@ -73,7 +76,8 @@ public class ProductController {
             product.setName(frame.getTxtName().getText());
             product.setType(frame.getTypeComboBox().getSelectedItem().toString());
             product.setQty(Integer.parseInt(frame.getQty().getText()));
-            product.setIs_deleted(false);  // Default to false for new products
+            product.setIs_deleted(false);  
+            product.setIs_available(frame.getAvailableCheckBox().isSelected());
             implProduct.update(product);
             
             JOptionPane.showMessageDialog(null, "Successfully updated data.");
@@ -92,38 +96,39 @@ public class ProductController {
          }
      }
      
-public void isiTableSearch() {
-    String idText = frame.getTxtID().getText().trim();
-    String nameText = frame.getTxtSearch().getText().trim();
-    
-    int id = -1; // Nilai default untuk ID
-    if (!idText.isEmpty()) {
-        try {
-            id = Integer.parseInt(idText);
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(frame, "Invalid ID format! Please enter a number.");
-            return;
+    public void isiTableSearch() {
+        String nameText = frame.getTxtSearchName().getText().trim();
+        Integer id = null;
+        String name = null;
+        if (!nameText.isEmpty()) {
+            name = nameText;
         }
-    }
-    
-    // Panggil metode search dengan kedua parameter
-    lb = implProduct.searchByIdOrName(id, nameText);
-    TableProductModel tme = new TableProductModel(lb);
-    frame.getTableData().setModel(tme);
-}
 
-public void searchByIdOrName() {
-    String idText = frame.getTxtID().getText().trim();
-    String nameText = frame.getTxtSearch().getText().trim();
-    
-    if (idText.isEmpty() && nameText.isEmpty()) {
-        JOptionPane.showMessageDialog(frame, "Please enter ID or Name to search.");
-        return;
-    }
-    
-    isiTableSearch();
-}
+        lb = implProduct.searchByIdOrName(id, name);
 
+        TableProductModel tme = new TableProductModel(lb);
+        frame.getTableData().setModel(tme);
+    }
+
+        public void searchByIdOrName() {
+            String searchText = frame.getTxtSearchName().getText().trim();
+            List<Product> results;
+            if (searchText.isEmpty() || searchText.equals("0")) {
+                results = implProduct.getAll(); 
+            } else {
+                Integer id = null;
+                String name = null;
+
+                try {
+                    id = Integer.parseInt(searchText);
+                } catch (NumberFormatException e) {
+                    name = searchText;
+                }
+                results = implProduct.searchByIdOrName(id, name);
+            }
+            TableProductModel tme = new TableProductModel(results);
+            frame.getTableData().setModel(tme);
+        }
      
      public void setAutoID() {
         int nextId = implProduct.getNextProductId();

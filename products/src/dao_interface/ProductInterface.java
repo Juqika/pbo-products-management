@@ -9,7 +9,7 @@ import model.Product;
 
 /**
  *
- * @author indrovert
+ * @author 
  */
 public interface ProductInterface {
     void insert(Product p);
@@ -17,5 +17,5 @@ public interface ProductInterface {
     void delete(int id);
     int getNextProductId();
     List<Product> getAll();
-    List<Product> searchByIdOrName(int id, String name);
+    List<Product> searchByIdOrName(Integer id, String name);
 }

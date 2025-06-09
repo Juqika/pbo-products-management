@@ -13,10 +13,8 @@ public class Employee {
     private String name, gender;
     private boolean is_deleted;
 
-    // Konstruktor default
     public Employee() {}
 
-    // Konstruktor dengan parameter
     public Employee(int id_employee, String name, String gender, boolean is_deleted) {
         this.id_employee = id_employee;
         this.name = name;
@@ -24,7 +22,6 @@ public class Employee {
         this.is_deleted = is_deleted;
     }
 
-    // Getter & Setter untuk is_deleted
     public boolean isIs_deleted() {
         return is_deleted;
     }
@@ -33,7 +30,6 @@ public class Employee {
         this.is_deleted = is_deleted;
     }
 
-    // Getter & Setter untuk id_employee
     public int getId_employee() {
         return id_employee;
     }
@@ -42,7 +38,6 @@ public class Employee {
         this.id_employee = id_employee;
     }
 
-    // Getter & Setter untuk name
     public String getName() {
         return name;
     }
@@ -51,7 +46,6 @@ public class Employee {
         this.name = name;
     }
 
-    // Getter & Setter untuk gender (diubah dari 'male')
     public String getGender() {
         return gender;
     }

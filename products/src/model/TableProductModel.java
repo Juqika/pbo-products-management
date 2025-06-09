@@ -30,15 +30,15 @@ public class TableProductModel extends AbstractTableModel {
      public String getColumnName(int column) {
         switch (column) {
             case 0:
-                return "id_product";
+                return "ID";
             case 1:
-                return "name";
+                return "Name";
             case 2:
-                return "type";
+                return "Type";
             case 3:
-                return "qty";
+                return "Quantity";
             case 4:
-                return "is_deleted";
+                return "Available";
             default:
                 return null;
         }
@@ -55,7 +55,7 @@ public class TableProductModel extends AbstractTableModel {
             case 3:
                 return lb.get(row).getQty();
             case 4:
-                return lb.get(row).isIs_deleted();
+                return lb.get(row).isIs_available();
             default:
                 return null;
         }
