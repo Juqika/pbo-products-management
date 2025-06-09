@@ -13,26 +13,39 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 /**
- *
- * @author windows 10
+ * Kelas DAO (Data Access Object) untuk entitas shift_pic
+ * Menangani operasi database untuk tabel ShiftPic
  */
 public class shiftPicDAO implements shiftPicInterface {
     Connection conn;
+    
+    /**
+     * Constructor untuk shiftPicDAO
+     * Menginisialisasi koneksi database
+     */
     public shiftPicDAO(){
         conn = connect.getcC();
     }
     
+    /**
+     * Menyimpan shift baru ke database
+     * 
+     * @param s Objek shift_pic yang akan disimpan
+     */
     @Override
     public void insert(shift_pic s) {
         String sql = "INSERT INTO ShiftPic (id_employee, start, end, note, is_deleted) VALUES (?, ?, ?, ?, false)";
         try (PreparedStatement st = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            // Mengisi parameter query
             st.setInt(1, s.getIdEmployee());
             st.setTimestamp(2, s.getStart_check_time() != null ? Timestamp.valueOf(s.getStart_check_time()) : null);
             st.setTimestamp(3, s.getEnd_check_time() != null ? Timestamp.valueOf(s.getEnd_check_time()) : null);
             st.setString(4, s.getNote());
             
+            // Mengeksekusi query
             st.executeUpdate();
             
+            // Mendapatkan ID yang dihasilkan oleh database
             try (ResultSet rs = st.getGeneratedKeys()) {
                 if (rs.next()) {
                     s.setIdShift(rs.getInt(1));
@@ -43,22 +56,36 @@ public class shiftPicDAO implements shiftPicInterface {
             e.printStackTrace();
         }
     }
+    
+    /**
+     * Memperbarui shift yang ada di database
+     * 
+     * @param s Objek shift_pic dengan data yang diperbarui
+     */
     @Override
     public void update(shift_pic s) {
         String sql = "UPDATE ShiftPic SET id_employee = ?, start = ?, end = ?, note = ? WHERE id_shift = ?";
         try (PreparedStatement st = conn.prepareStatement(sql)) {
+            // Mengisi parameter query  Mengonversi LocalDateTime ke Timestamp untuk database
             st.setInt(1, s.getIdEmployee());
             st.setTimestamp(2, s.getStart_check_time() != null ? Timestamp.valueOf(s.getStart_check_time()) : null);
             st.setTimestamp(3, s.getEnd_check_time() != null ? Timestamp.valueOf(s.getEnd_check_time()) : null);
             st.setString(4, s.getNote());
             st.setInt(5, s.getIdShift());
             
+            // Mengeksekusi query
             st.executeUpdate();
         } catch (SQLException e) {
             System.out.println("Error updating shift: " + e.getMessage());
             e.printStackTrace();
         }
     }
+    
+    /**
+     * Menghapus shift dari database (soft delete)
+     * 
+     * @param idShift ID shift yang akan dihapus
+     */
     @Override
     public void delete(int idShift){
         String sql = "UPDATE ShiftPic SET is_deleted = true WHERE id_shift = ?";
@@ -70,6 +97,12 @@ public class shiftPicDAO implements shiftPicInterface {
             e.printStackTrace();
         }
     }
+    
+    /**
+     * Mendapatkan semua shift yang tidak dihapus
+     * 
+     * @return List berisi objek shift_pic
+     */
     @Override
     public List<shift_pic> getAll(){
         List<shift_pic> list = new ArrayList<>();
@@ -80,11 +113,13 @@ public class shiftPicDAO implements shiftPicInterface {
         try (PreparedStatement st = conn.prepareStatement(sql)) {
             ResultSet rs = st.executeQuery();
             while(rs.next()){
+                // Membuat objek shift_pic baru untuk setiap baris hasil query
                 shift_pic s = new shift_pic();
                 s.setIdShift(rs.getInt("id_shift"));
                 s.setIdEmployee(rs.getInt("id_employee"));
                 s.setName(rs.getString("name"));
                 
+                // Mengonversi Timestamp dari database ke LocalDateTime
                 Timestamp start = rs.getTimestamp("start");
                 if (start != null) {
                     s.setStart_check_time(start.toLocalDateTime());
@@ -106,6 +141,11 @@ public class shiftPicDAO implements shiftPicInterface {
         return list;
     }
 
+    /**
+     * Mendapatkan daftar semua karyawan yang tidak dihapus
+     * 
+     * @return List berisi objek Employee
+     */
     public List<Employee> getEmployees() {
         List<Employee> list = new ArrayList<>();
         // Hanya ambil id_employee dan name
@@ -114,6 +154,7 @@ public class shiftPicDAO implements shiftPicInterface {
              ResultSet rs = st.executeQuery()) {
             
             while (rs.next()) {
+                // Membuat objek Employee baru untuk setiap baris hasil query
                 Employee emp = new Employee();
                 emp.setId_employee(rs.getInt("id_employee"));
                 emp.setName(rs.getString("name"));
@@ -127,6 +168,12 @@ public class shiftPicDAO implements shiftPicInterface {
         return list;
     }
 
+    /**
+     * Mendapatkan shift berdasarkan ID
+     * 
+     * @param idShift ID shift yang dicari
+     * @return Objek shift_pic, atau null jika tidak ditemukan
+     */
     @Override
     public shift_pic getById(int idShift){
         shift_pic s = null;
@@ -138,11 +185,13 @@ public class shiftPicDAO implements shiftPicInterface {
             st.setInt(1, idShift);
             ResultSet rs = st.executeQuery();
             if(rs.next()){
+                // Membuat objek shift_pic baru jika ditemukan
                 s = new shift_pic();
                 s.setIdShift(rs.getInt("id_shift"));
                 s.setIdEmployee(rs.getInt("id_employee"));
                 s.setName(rs.getString("name"));
                 
+                // Mengonversi Timestamp dari database ke LocalDateTime
                 Timestamp start = rs.getTimestamp("start");
                 if (start!= null) {
                     s.setStart_check_time(start.toLocalDateTime());

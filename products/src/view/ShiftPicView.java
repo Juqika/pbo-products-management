@@ -8,13 +8,17 @@ import controller.ShiftPicController;
 import javax.swing.JOptionPane;
 
 /**
- *
- * @author windows 10
+ * View untuk manajemen Shift PIC
+ * Menampilkan form dan tabel untuk mengelola data shift
  */
 public class ShiftPicView extends javax.swing.JFrame {
 
     private ShiftPicController sp;
     
+    /**
+     * Constructor untuk ShiftPicView
+     * Menginisialisasi komponen UI dan controller
+     */
     public ShiftPicView() {
         initComponents();
         
@@ -204,6 +208,12 @@ public class ShiftPicView extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_btnHomeActionPerformed
 
+    /**
+     * Event handler untuk tombol Delete
+     * Menghapus shift yang dipilih (soft delete)
+     * 
+     * @param evt Event action performed
+     */
     private void btnDeletedActionPerformed(java.awt.event.ActionEvent evt) {
         // Get selected row
         int row = tTable.getSelectedRow();
@@ -218,11 +228,23 @@ public class ShiftPicView extends javax.swing.JFrame {
         }
     }
 
+    /**
+     * Event handler untuk tombol Start
+     * Menyimpan shift baru ke database
+     * 
+     * @param evt Event action performed
+     */
     private void btnStartActionPerformed(java.awt.event.ActionEvent evt) {
         // Panggil metode insert() dari controller
         sp.insert();
     }
 
+    /**
+     * Event handler untuk tombol Stop
+     * Memperbarui shift yang ada dengan waktu selesai
+     * 
+     * @param evt Event action performed
+     */
     private void btnStopActionPerformed(java.awt.event.ActionEvent evt) {
         // Get selected row
         int row = tTable.getSelectedRow();
@@ -237,6 +259,12 @@ public class ShiftPicView extends javax.swing.JFrame {
         }
     }
 
+    /**
+     * Event handler untuk klik pada tabel
+     * Mengisi form dengan data dari baris yang dipilih
+     * 
+     * @param evt Event mouse click
+     */
     private void tTableMouseClicked(java.awt.event.MouseEvent evt) {
         int row = tTable.getSelectedRow();
         if (row >= 0) {
@@ -269,12 +297,20 @@ public class ShiftPicView extends javax.swing.JFrame {
     private javax.swing.JTextField tfNote;
     // End of variables declaration//GEN-END:variables
 
-    // Metode getter yang diperlukan di ShiftPicView
-
+    /**
+     * Getter untuk field note
+     * 
+     * @return TextField untuk note
+     */
     public javax.swing.JTextField gettfNote() {
         return tfNote;
     }
 
+    /**
+     * Getter untuk tabel
+     * 
+     * @return JTable untuk menampilkan data shift
+     */
     public javax.swing.JTable gettTable() {
         return tTable;
     }
