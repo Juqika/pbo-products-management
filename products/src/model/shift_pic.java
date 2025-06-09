@@ -12,13 +12,15 @@ import java.time.LocalDateTime;
  */
 public class shift_pic {
     private int idShift;
+    private int idEmployee;
     private String name, note;
     private LocalDateTime start_check_time, end_check_time;
     private boolean is_deleted;
     
     public shift_pic(){}
-    public shift_pic(int idShift, String name, LocalDateTime start_check_time, LocalDateTime end_check_time, String note, boolean is_deleted){
+    public shift_pic(int idShift, int idEmployee, String name, LocalDateTime start_check_time, LocalDateTime end_check_time, String note, boolean is_deleted){
         this.idShift = idShift;
+        this.idEmployee = idEmployee;
         this.name = name;
         this.start_check_time = start_check_time;
         this.end_check_time = end_check_time;
@@ -31,6 +33,12 @@ public class shift_pic {
     }
     public void setIdShift(int idShift) {
         this.idShift = idShift;
+    }
+    public int getIdEmployee() {
+        return idEmployee;
+    }
+    public void setIdEmployee(int idEmployee) {
+        this.idEmployee = idEmployee;
     }
     public String getName() {
         return name;

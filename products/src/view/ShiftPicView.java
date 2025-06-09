@@ -34,6 +34,11 @@ public class ShiftPicView extends javax.swing.JFrame {
         
         // Inisialisasi controller dan isi tabel
         sp = new ShiftPicController(this);
+        
+        // Isi ComboBox dengan nama employee
+        sp.fillEmployeeComboBox();
+        
+        // Isi tabel
         sp.isiTable();
     }
     
@@ -53,6 +58,9 @@ public class ShiftPicView extends javax.swing.JFrame {
         tfNote = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         btnDeleted = new javax.swing.JButton();
+        cbName = new javax.swing.JComboBox<>();
+        tfID = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
 
         tTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -95,7 +103,7 @@ public class ShiftPicView extends javax.swing.JFrame {
             }
         });
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel1.setText("Note :");
 
         btnDeleted.setText("Deleted");
@@ -105,29 +113,34 @@ public class ShiftPicView extends javax.swing.JFrame {
             }
         });
 
-        // Tambahkan event handler untuk klik pada tabel
-        tTable.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                int row = tTable.getSelectedRow();
-                if (row >= 0) {
-                    // Isi field note dengan data dari tabel
-                    String note = (String) tTable.getValueAt(row, 4);
-                    tfNote.setText(note);
-                }
+        cbName.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cbName.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbNameActionPerformed(evt);
             }
         });
+
+        jLabel2.setText("ID:");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(10, 10, 10)
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnStart, javax.swing.GroupLayout.DEFAULT_SIZE, 169, Short.MAX_VALUE)
-                    .addComponent(btnStop, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnDeleted, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnStart, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnStop, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnDeleted, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(cbName, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(10, 10, 10))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(tfID, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel1)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 741, Short.MAX_VALUE)
@@ -137,19 +150,25 @@ public class ShiftPicView extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(23, 23, 23)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(tfNote, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel2)
+                            .addComponent(tfID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(cbName, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnStart, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnStop, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnDeleted, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(btnDeleted, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(tfNote, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -158,45 +177,40 @@ public class ShiftPicView extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_tfNoteActionPerformed
 
+    private void cbNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbNameActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cbNameActionPerformed
+
     private void btnDeletedActionPerformed(java.awt.event.ActionEvent evt) {
         // Get selected row
         int row = tTable.getSelectedRow();
         if (row >= 0) {
-            // Ambil ID dari tabel
-            int id = (int) tTable.getValueAt(row, 0);
+            // Ambil ID Shift dari tabel
+            int idShift = (int) tTable.getValueAt(row, 0);
             
-            // Panggil metode delete() dari controller dengan ID
-            sp.delete(id);
+            // Panggil metode delete() dari controller dengan ID Shift
+            sp.delete(idShift);
         } else {
-            JOptionPane.showMessageDialog(this, "Please select an employee");
+            JOptionPane.showMessageDialog(this, "Please select a shift");
         }
     }
 
     private void btnStartActionPerformed(java.awt.event.ActionEvent evt) {
-        // Get selected row
-        int row = tTable.getSelectedRow();
-        if (row >= 0) {
-            // Ambil ID dari tabel
-            int id = (int) tTable.getValueAt(row, 0);
-            
-            // Panggil metode insert() dari controller dengan ID
-            sp.insert(id);
-        } else {
-            JOptionPane.showMessageDialog(this, "Please select an employee");
-        }
+        // Panggil metode insert() dari controller
+        sp.insert();
     }
 
     private void btnStopActionPerformed(java.awt.event.ActionEvent evt) {
         // Get selected row
         int row = tTable.getSelectedRow();
         if (row >= 0) {
-            // Ambil ID dari tabel
-            int id = (int) tTable.getValueAt(row, 0);
+            // Ambil ID Shift dari tabel
+            int idShift = (int) tTable.getValueAt(row, 0);
             
-            // Panggil metode update() dari controller dengan ID
-            sp.update(id);
+            // Panggil metode update() dari controller dengan ID Shift
+            sp.update(idShift);
         } else {
-            JOptionPane.showMessageDialog(this, "Please select an employee");
+            JOptionPane.showMessageDialog(this, "Please select a shift");
         }
     }
     
@@ -226,9 +240,12 @@ public class ShiftPicView extends javax.swing.JFrame {
     private javax.swing.JButton btnDeleted;
     private javax.swing.JButton btnStart;
     private javax.swing.JButton btnStop;
+    private javax.swing.JComboBox<String> cbName;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tTable;
+    private javax.swing.JTextField tfID;
     private javax.swing.JTextField tfNote;
     // End of variables declaration//GEN-END:variables
 
@@ -240,5 +257,10 @@ public class ShiftPicView extends javax.swing.JFrame {
 
     public javax.swing.JTable gettTable() {
         return tTable;
+    }
+
+    // Metode getter untuk ComboBox nama
+    public javax.swing.JComboBox<String> getCbName() {
+        return cbName;
     }
 }
